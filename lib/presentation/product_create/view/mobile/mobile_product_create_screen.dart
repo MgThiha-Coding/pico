@@ -9,6 +9,7 @@ import 'package:pico_pos/common/widgets/app_title.dart';
 import 'package:pico_pos/common/widgets/bar_code_scanner_screen.dart';
 import 'package:pico_pos/presentation/product_create/controller/product_notifier.dart';
 import 'package:pico_pos/presentation/product_create/model/product_model.dart';
+import 'package:pico_pos/presentation/wrapper/view/mobile/mobile_wrapper_main_screen.dart';
 
 class MobileProductCreateScreen extends ConsumerStatefulWidget {
   const MobileProductCreateScreen({super.key});
@@ -62,28 +63,37 @@ class _MobileProductCreateScreenState
   }
 
   Future<void> save() async {
-    final name = _nameController.text;
-    final category = _categoryController.text;
-    final imagePath = selectedImage?.path;
-    final price = double.tryParse(_priceController.text) ?? 0;
-    final cost = _costController.text;
-    final id = 1;
+    if (_nameController.text.isNotEmpty &&
+        _priceController.text.isNotEmpty &&
+        _categoryController.text.isNotEmpty &&
+        _priceController.text.isNotEmpty &&
+        _costController.text.isNotEmpty) {
+      final name = _nameController.text;
+      final category = _categoryController.text;
+      final imagePath = selectedImage?.path;
+      final price = double.tryParse(_priceController.text) ?? 0;
+      final cost = _costController.text;
+      final id = 1;
 
-    ref
-        .read(productNotifierProvider.notifier)
-        .createProduct(
-          ProductModel(
-            name: name,
-            category: category,
-            imagePath: imagePath,
-            price: price,
-            cost: cost,
-            id: id,
-            qty: 1,
-          ),
-        );
+      ref
+          .read(productNotifierProvider.notifier)
+          .createProduct(
+            ProductModel(
+              name: name,
+              category: category,
+              imagePath: imagePath,
+              price: price,
+              cost: cost,
+              id: id,
+              qty: 1,
+            ),
+          );
 
-    Navigator.pop(context);
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MobileWrapperMainScreen()),
+      );
+    }
   }
 
   @override

@@ -5,8 +5,11 @@ import 'package:pico_pos/presentation/wrapper/view/mobile/mobile_wrapper_main_sc
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // initialize hive database
   await Hive.initFlutter();
+  // open the hive database
   await Hive.openBox('box');
+  // runApp
   runApp(ProviderScope(child: MyApp()));
 }
 

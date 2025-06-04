@@ -1,10 +1,12 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:pico_pos/presentation/product_create/model/product_model.dart';
 
 class CartNotifier extends ChangeNotifier {
-  CartNotifier() {
+  CartNotifier() : super() {
     init();
   }
 
@@ -19,8 +21,10 @@ class CartNotifier extends ChangeNotifier {
     }
   }
 
-  Future<void> addToCart(ProductModel product) async {
-    int index = _cart.indexWhere((e) => e.id == product.id);
+  List<ProductModel> get cart => UnmodifiableListView(_cart);
+
+  void addtoCart(ProductModel product) {
+    int index = _cart.indexWhere((element) => element.name == product.name);
     if (index != -1) {
       _cart[index].qty++;
     } else {
@@ -31,25 +35,28 @@ class CartNotifier extends ChangeNotifier {
           price: product.price,
           cost: product.cost,
           id: product.id,
-          qty: 1,
-          barcode: product.barcode,
-          imagePath: product.imagePath,
+          qty: product.qty > 0 ? product.qty : 1,
         ),
       );
     }
     notifyListeners();
   }
 
-  void clearCart() {
-    _cart.clear();
-    notifyListeners();
-  }
-
   double get totalPrice {
-    return _cart.fold(0.0, (sum, item) => sum + item.qty * item.price);
+    double total = 0.0;
+    for (var item in _cart) {
+      total += item.price * item.qty;
+    }
+    return total;
   }
 
-  List<ProductModel> get cartItems => List.unmodifiable(_cart);
+  int get itemQty {
+    int totalQty = 0;
+    for (var i in _cart) {
+      totalQty += i.qty;
+    }
+    return totalQty;
+  }
 }
 
 final cartNotifierProvider = ChangeNotifierProvider<CartNotifier>(

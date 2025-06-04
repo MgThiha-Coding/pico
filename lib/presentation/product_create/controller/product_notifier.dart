@@ -39,8 +39,28 @@ class ProductNotifier extends ChangeNotifier {
   }
 
   Future<void> deleteProduct(int key) async {
-    await box.delete(key); // use delete, not deleteAt
+    await box.delete(key);
     notifyListeners();
+  }
+
+  String _searchQuery = '';
+  String get searchQuery => _searchQuery;
+
+  void updateSearchQuery(String query) {
+    _searchQuery = query.toLowerCase();
+    notifyListeners();
+  }
+
+  List<ProductModel> get filteredProducts {
+    if (_searchQuery.isEmpty) return product;
+    return product
+        .where(
+          (item) =>
+              item.name.toLowerCase().contains(_searchQuery) ||
+              item.category.toLowerCase().contains(_searchQuery) ||
+              item.id.toString().contains(_searchQuery),
+        )
+        .toList();
   }
 }
 

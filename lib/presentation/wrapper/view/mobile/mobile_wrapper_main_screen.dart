@@ -19,8 +19,7 @@ class _MobileWrapperMainScreenState
   @override
   Widget build(BuildContext context) {
     final item = ref.watch(productNotifierProvider);
-    final itemNotifier = ref.watch(productNotifierProvider.notifier);
-    final cart = ref.watch(cartNotifierProvider);
+    final cartItem = ref.watch(cartNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -36,11 +35,70 @@ class _MobileWrapperMainScreenState
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
         child: Column(
           children: [
+            const SizedBox(height: 6),
+
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Item - ${item.cart.first.qty}'),
-                Text('Item - ${cart.totalPrice}'),
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 1),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Icon(Icons.inventory_2_outlined),
+                        Text(cartItem.itemQty.toString()),
+                      ],
+                    ),
+                  ),
+                ),
+
+                const SizedBox(width: 10),
+                Row(
+                  children: [
+                    TextField(
+                      decoration: InputDecoration(
+                        labelText: 'Search Product',
+                        prefixIcon: Icon(Icons.search),
+                      ),
+                      onChanged: (value) {
+                        ref
+                            .read(productNotifierProvider)
+                            .updateSearchQuery(value);
+                      },
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 10),
+
+                Expanded(
+                  flex: 3,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 1),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Charges"),
+                        Text(
+                          '${cartItem.totalPrice.toStringAsFixed(2)} ${cartItem.cart.first.cost}',
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
 
@@ -55,9 +113,9 @@ class _MobileWrapperMainScreenState
                     padding: const EdgeInsets.only(top: 4),
                     child: ListTile(
                       onTap: () {
-                        itemNotifier.createProduct(data);
+                        ref.read(cartNotifierProvider.notifier).addtoCart(data);
                       },
-                      horizontalTitleGap: 16,
+
                       tileColor: Colors.grey[200],
                       // product image
                       leading:
@@ -74,33 +132,24 @@ class _MobileWrapperMainScreenState
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
                       ),
-                      trailing: IconButton(
-                        onPressed: () {
-                          ref
-                              .read(productNotifierProvider.notifier)
-                              .deleteProduct(data.id);
-                        },
-                        icon: Icon(Icons.delete),
-                      ),
-                      subtitle: Expanded(
-                        child: Row(
-                          children: [
-                            // product price
-                            Text(
-                              data.price.toStringAsFixed(2),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
 
-                            const SizedBox(width: 6),
-                            // currency
-                            Text(
-                              data.cost,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
-                          ],
-                        ),
+                      subtitle: Row(
+                        children: [
+                          // product price
+                          Text(
+                            data.price.toStringAsFixed(2),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          ),
+
+                          const SizedBox(width: 6),
+                          // currency
+                          Text(
+                            data.cost,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          ),
+                        ],
                       ),
                     ),
                   );
