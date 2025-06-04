@@ -1,10 +1,10 @@
 import 'dart:io' show File;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pico_pos/common/widgets/app_drawer.dart';
 import 'package:pico_pos/common/widgets/app_title.dart';
 import 'package:pico_pos/presentation/product_create/controller/product_notifier.dart';
+import 'package:pico_pos/presentation/wrapper/controller/cart_notifier.dart';
 
 class MobileWrapperMainScreen extends ConsumerStatefulWidget {
   const MobileWrapperMainScreen({super.key});
@@ -19,6 +19,8 @@ class _MobileWrapperMainScreenState
   @override
   Widget build(BuildContext context) {
     final item = ref.watch(productNotifierProvider);
+    final itemNotifier = ref.watch(productNotifierProvider.notifier);
+    final cart = ref.watch(cartNotifierProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -34,12 +36,12 @@ class _MobileWrapperMainScreenState
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [Text('Item - 10'), Text('Total Price - 3000 Ks')],
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Item - ${item.cart.first.qty}'),
+                Text('Item - ${cart.totalPrice}'),
+              ],
             ),
 
             const SizedBox(height: 10),
@@ -52,6 +54,9 @@ class _MobileWrapperMainScreenState
                   return Padding(
                     padding: const EdgeInsets.only(top: 4),
                     child: ListTile(
+                      onTap: () {
+                        itemNotifier.createProduct(data);
+                      },
                       horizontalTitleGap: 16,
                       tileColor: Colors.grey[200],
                       // product image
@@ -68,6 +73,14 @@ class _MobileWrapperMainScreenState
                         data.name,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
+                      ),
+                      trailing: IconButton(
+                        onPressed: () {
+                          ref
+                              .read(productNotifierProvider.notifier)
+                              .deleteProduct(data.id);
+                        },
+                        icon: Icon(Icons.delete),
                       ),
                       subtitle: Expanded(
                         child: Row(

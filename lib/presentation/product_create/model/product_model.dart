@@ -6,6 +6,7 @@ class ProductModel {
   final String? barcode;
   final String? imagePath;
   final int id;
+  int qty;
 
   ProductModel({
     required this.name,
@@ -15,6 +16,7 @@ class ProductModel {
     this.barcode,
     this.imagePath,
     required this.id,
+    required this.qty,
   });
 
   // from Json to object
@@ -27,6 +29,7 @@ class ProductModel {
       barcode: json['barcode'],
       imagePath: json['imagePath'],
       id: json['id'] ?? 0,
+      qty: json['qty'] ?? 0,
     );
   }
 
@@ -40,6 +43,7 @@ class ProductModel {
       "barcode": barcode,
       "imagePath": imagePath,
       "id": id,
+      "qty": qty,
     };
   }
 }

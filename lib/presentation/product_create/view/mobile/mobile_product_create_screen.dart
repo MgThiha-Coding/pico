@@ -79,6 +79,7 @@ class _MobileProductCreateScreenState
             price: price,
             cost: cost,
             id: id,
+            qty: 1,
           ),
         );
 

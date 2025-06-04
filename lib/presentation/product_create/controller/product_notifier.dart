@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -9,6 +11,7 @@ class ProductNotifier extends ChangeNotifier {
   }
 
   late Box box;
+  final List<ProductModel> _cart = [];
 
   Future<void> init() async {
     try {
@@ -23,6 +26,8 @@ class ProductNotifier extends ChangeNotifier {
           .map((e) => ProductModel.fromJson(Map<String, dynamic>.from(e)))
           .toList();
 
+  List<ProductModel> get cart => UnmodifiableListView(_cart);
+
   Future<void> createProduct(ProductModel product) async {
     await box.add(product.toJson());
     notifyListeners();
@@ -34,7 +39,7 @@ class ProductNotifier extends ChangeNotifier {
   }
 
   Future<void> deleteProduct(int key) async {
-    await box.delete(key);
+    await box.delete(key); // use delete, not deleteAt
     notifyListeners();
   }
 }
