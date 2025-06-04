@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pico_pos/presentation/product_create/view/mobile/mobile_product_create_screen.dart';
-import 'package:pico_pos/presentation/wrapper/mobile/mobile_wrapper_main_screen.dart';
+import 'package:pico_pos/presentation/wrapper/view/mobile/mobile_wrapper_main_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});

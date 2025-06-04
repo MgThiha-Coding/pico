@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:pico_pos/presentation/wrapper/mobile/mobile_wrapper_main_screen.dart';
+import 'package:pico_pos/presentation/wrapper/view/mobile/mobile_wrapper_main_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
