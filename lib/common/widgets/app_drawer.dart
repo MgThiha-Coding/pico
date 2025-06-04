@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pico_pos/presentation/product_create/view/mobile/mobile_product_create_screen.dart';
+import 'package:pico_pos/presentation/wrapper/mobile/mobile_wrapper_main_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -32,14 +34,28 @@ class AppDrawer extends StatelessWidget {
           ),
 
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MobileWrapperMainScreen(),
+                ),
+              );
+            },
             minTileHeight: 50,
             leading: Icon(Icons.point_of_sale, color: Colors.blueAccent),
             title: Text('Sales'),
           ),
 
           ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MobileProductCreateScreen(),
+                ),
+              );
+            },
             minTileHeight: 50,
             leading: Icon(Icons.inventory_2, color: Colors.blueAccent),
             title: Text('Items'),

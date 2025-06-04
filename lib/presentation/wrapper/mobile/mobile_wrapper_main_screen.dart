@@ -1,9 +1,10 @@
+import 'dart:io' show File;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pico_pos/common/widgets/app_drawer.dart';
 import 'package:pico_pos/common/widgets/app_title.dart';
 import 'package:pico_pos/presentation/product_create/controller/product_notifier.dart';
-import 'package:pico_pos/presentation/product_create/view/mobile/mobile_product_create_screen.dart';
 
 class MobileWrapperMainScreen extends ConsumerStatefulWidget {
   const MobileWrapperMainScreen({super.key});
@@ -26,30 +27,75 @@ class _MobileWrapperMainScreenState
         centerTitle: true,
         title: AppTitle(title: "Pico POS"),
       ),
+
       drawer: AppDrawer(),
 
-      body: ListView.builder(
-        itemCount: item.product.length,
-        itemBuilder: (context, index) {
-          final data = item.product[index];
-          return ListTile(
-            title: Text(data.name),
-            subtitle: Text(data.price.toString()),
-            trailing: Text(data.cost),
-          );
-        },
-      ),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MobileProductCreateScreen(),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [Text('Item - 10'), Text('Total Price - 3000 Ks')],
+              ),
             ),
-          );
-        },
-        child: Icon(Icons.add),
+
+            const SizedBox(height: 10),
+
+            Expanded(
+              child: ListView.builder(
+                itemCount: item.product.length,
+                itemBuilder: (context, index) {
+                  final data = item.product[index];
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: ListTile(
+                      horizontalTitleGap: 16,
+                      tileColor: Colors.grey[200],
+                      // product image
+                      leading:
+                          data.imagePath != null
+                              ? CircleAvatar(
+                                backgroundImage: FileImage(
+                                  File(data.imagePath!),
+                                ),
+                              )
+                              : CircleAvatar(child: Icon(Icons.inventory)),
+                      // product name
+                      title: Text(
+                        data.name,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                      ),
+                      subtitle: Expanded(
+                        child: Row(
+                          children: [
+                            // product price
+                            Text(
+                              data.price.toStringAsFixed(2),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                            ),
+
+                            const SizedBox(width: 6),
+                            // currency
+                            Text(
+                              data.cost,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

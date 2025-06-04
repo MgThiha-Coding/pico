@@ -88,12 +88,6 @@ class _MobileProductCreateScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          save();
-        },
-        child: Icon(Icons.add),
-      ),
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: Colors.blueAccent,
@@ -101,7 +95,9 @@ class _MobileProductCreateScreenState
         title: AppTitle(title: "New Sale"),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              save();
+            },
             child: Text('Save', style: TextStyle(color: Colors.white)),
           ),
         ],
@@ -109,7 +105,7 @@ class _MobileProductCreateScreenState
       drawer: AppDrawer(),
 
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -122,9 +118,6 @@ class _MobileProductCreateScreenState
                   contentPadding: EdgeInsets.symmetric(
                     horizontal: 12,
                     vertical: 12,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(6.0),
                   ),
                 ),
               ),
@@ -306,9 +299,6 @@ class _MobileProductCreateScreenState
                   contentPadding: EdgeInsets.symmetric(
                     horizontal: 12,
                     vertical: 12,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(6.0),
                   ),
                 ),
               ),
