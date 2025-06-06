@@ -43,6 +43,18 @@ class CartNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  void reduceQty(ProductModel product){
+    int index = _cart.indexWhere((element)=> element.name == product.name);
+    if (index != -1){
+      if ( _cart[index].qty > 1){
+        _cart[index].qty--;
+      } else{
+        _cart.removeAt(index);
+      }
+    }
+    notifyListeners();
+  }
+
   double get totalPrice {
     double total = 0.0;
     for (var item in _cart) {

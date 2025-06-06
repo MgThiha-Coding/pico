@@ -71,9 +71,6 @@ class _MobileItemOverviewScreenState
                 return Padding(
                   padding: const EdgeInsets.only(top: 4),
                   child: ListTile(
-                    onTap: () {
-                      ref.read(cartNotifierProvider.notifier).addtoCart(data);
-                    },
                     tileColor: Colors.grey[200],
                     leading:
                         data.imagePath != null
@@ -88,17 +85,39 @@ class _MobileItemOverviewScreenState
                     ),
                     subtitle:
                         qty > 0
-                            ? Text(
-                              'Qty: $qty, Subtotal: \$${subtotal.toStringAsFixed(2)}',
-                            )
+                            ? Text('$qty × \$${subtotal.toStringAsFixed(2)}')
                             : Text('Not in cart'),
+
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.remove),
+                          onPressed: () {
+                            ref
+                                .read(cartNotifierProvider.notifier)
+                                .reduceQty(data);
+                          },
+                        ),
+
+                        IconButton(
+                          icon: Icon(Icons.add),
+                          onPressed: () {
+                            // call your method to increase quantity
+                            ref
+                                .read(cartNotifierProvider.notifier)
+                                .addtoCart(data);
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
             ),
           ),
 
-          const SizedBox(height: 19,),
+          const SizedBox(height: 19),
           // Total Price
           Text(
             'Total: \$${cartItem.totalPrice.toStringAsFixed(2)}',
@@ -108,7 +127,7 @@ class _MobileItemOverviewScreenState
               color: Colors.green,
             ),
           ),
-          // Print Receipt Button 
+          // Print Receipt Button
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             child: SizedBox(

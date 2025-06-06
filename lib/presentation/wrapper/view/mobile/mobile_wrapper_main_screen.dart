@@ -17,10 +17,12 @@ class MobileWrapperMainScreen extends ConsumerStatefulWidget {
 
 class _MobileWrapperMainScreenState
     extends ConsumerState<MobileWrapperMainScreen> {
+
   @override
   Widget build(BuildContext context) {
     final item = ref.watch(productNotifierProvider);
     final cartItem = ref.watch(cartNotifierProvider);
+
 
     return Scaffold(
       appBar: AppBar(
@@ -31,8 +33,13 @@ class _MobileWrapperMainScreenState
         actions: [
           // ItemKindCount
           GestureDetector(
-            onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> MobileItemOverviewScreen()));
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MobileItemOverviewScreen(),
+                ),
+              );
             },
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
@@ -106,21 +113,22 @@ class _MobileWrapperMainScreenState
             ),
 
             const SizedBox(height: 10),
-           // Product List 
+            
+            // Product List
             Expanded(
               child: ListView.builder(
                 itemCount: item.product.length,
                 itemBuilder: (context, index) {
                   final data = item.product[index];
+                 
                   return Padding(
                     padding: const EdgeInsets.only(top: 4),
                     child: ListTile(
+                      tileColor: Colors.grey[200],
                       onTap: () {
                         ref.read(cartNotifierProvider.notifier).addtoCart(data);
                       },
-
-                      tileColor: Colors.grey[200],
-                      // product image
+                     
                       leading:
                           data.imagePath != null
                               ? CircleAvatar(
@@ -129,7 +137,6 @@ class _MobileWrapperMainScreenState
                                 ),
                               )
                               : CircleAvatar(child: Icon(Icons.inventory)),
-                      // product name
                       title: Text(
                         data.name,
                         overflow: TextOverflow.ellipsis,
@@ -138,15 +145,12 @@ class _MobileWrapperMainScreenState
 
                       subtitle: Row(
                         children: [
-                          // product price
                           Text(
                             data.price.toStringAsFixed(2),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
                           ),
-
                           const SizedBox(width: 6),
-                          // currency
                           Text(
                             data.cost,
                             overflow: TextOverflow.ellipsis,
