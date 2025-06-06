@@ -63,14 +63,48 @@ class _MobileItemOverviewScreenState
                 final data = item.product[index];
                 final cartProduct = cartItem.cart.firstWhere(
                   (element) => element.name == data.name,
-                  //orElse: () => null,
+                  orElse: () => data,
                 );
                 final qty = cartProduct.qty;
                 final subtotal = qty * data.price;
-
+                
                 return Padding(
                   padding: const EdgeInsets.only(top: 4),
                   child: ListTile(
+                    onLongPress: (){
+                      showDialog(context: context, builder: (context){
+                        return AlertDialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)
+                          ),
+                          titleTextStyle: TextStyle(fontSize: 
+                          18,color: Colors.red),
+                          actionsAlignment: MainAxisAlignment.spaceEvenly,
+                          title: Text('Remove Item',),
+                          content: Text("Are you sure you want to remove ${data.name} from the cart?"),
+                          actions: [ 
+                             TextButton(
+                               onPressed: (){
+                                 Navigator.pop(context);
+                               },
+                               child: Text("Cancel",style: TextStyle( 
+                                 color: Colors.blueAccent,fontWeight: FontWeight.bold,
+                               ),),
+                               
+                             ),
+                              TextButton(
+                               onPressed: (){
+                                 ref.read(productNotifierProvider.notifier).deleteProduct(data.id);
+                               },
+                               child: Text("Remove",style: TextStyle( 
+                                 color: Colors.red,fontWeight: FontWeight.bold
+                               ),),
+                               
+                             )
+                          ],
+                        );
+                      });
+                    },
                     tileColor: Colors.grey[200],
                     leading:
                         data.imagePath != null
@@ -103,7 +137,7 @@ class _MobileItemOverviewScreenState
                         IconButton(
                           icon: Icon(Icons.add),
                           onPressed: () {
-                            // call your method to increase quantity
+                         
                             ref
                                 .read(cartNotifierProvider.notifier)
                                 .addtoCart(data);
