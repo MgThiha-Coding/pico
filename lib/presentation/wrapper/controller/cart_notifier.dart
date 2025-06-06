@@ -12,6 +12,7 @@ class CartNotifier extends ChangeNotifier {
 
   late Box box;
   final List<ProductModel> _cart = [];
+  int get itemKindCount => _cart.length;
 
   Future<void> init() async {
     try {
