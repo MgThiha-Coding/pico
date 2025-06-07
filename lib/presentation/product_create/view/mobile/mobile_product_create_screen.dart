@@ -68,6 +68,7 @@ class _MobileProductCreateScreenState
       final imagePath = selectedImage?.path;
       final price = double.tryParse(_priceController.text) ?? 0;
       final cost = _costController.text;
+      final barcode = _barcodeController.text;
       final id = 1;
 
       ref
@@ -81,6 +82,7 @@ class _MobileProductCreateScreenState
               cost: cost,
               id: id,
               qty: 1,
+              barcode: barcode
             ),
           );
 
@@ -274,6 +276,8 @@ class _MobileProductCreateScreenState
                           _barcodeController.text = scannedCode;
                         });
                       }
+                   
+
                     },
                     icon: const Icon(Icons.qr_code_scanner),
                   ),

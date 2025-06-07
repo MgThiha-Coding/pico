@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pico_pos/common/widgets/app_drawer.dart';
 import 'package:pico_pos/common/widgets/app_title.dart';
+import 'package:pico_pos/common/widgets/bar_code_scanner_screen.dart';
 import 'package:pico_pos/presentation/product_create/controller/product_notifier.dart';
 import 'package:pico_pos/presentation/wrapper/controller/cart_notifier.dart';
 import 'package:pico_pos/presentation/wrapper/view/mobile/mobile_item_overview_screen.dart';
@@ -18,11 +19,43 @@ class MobileWrapperMainScreen extends ConsumerStatefulWidget {
 class _MobileWrapperMainScreenState
     extends ConsumerState<MobileWrapperMainScreen> {
   int _currentIndex = 0; // 0 = ListView, 1 = GridView
+  final TextEditingController _searchController = TextEditingController();
+  final TextEditingController _barcodeController = TextEditingController();
+  String _searchQuery = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _barcodeController.addListener(() {
+      if (_barcodeController.text.isEmpty) {
+        setState(() {
+          _searchQuery = '';
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _barcodeController.dispose();
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final item = ref.watch(productNotifierProvider);
     final cartItem = ref.watch(cartNotifierProvider);
+    _searchQuery.toLowerCase().trim();
+    final filteredProducts =
+        _searchQuery.isEmpty
+            ? item.product
+            : item.product.where((product) {
+              final query = _searchQuery.toLowerCase();
+              final name = product.name.toLowerCase();
+              final barcode = product.barcode.toString().toLowerCase();
+              return name.contains(query) || barcode.contains(query);
+            }).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -111,6 +144,51 @@ class _MobileWrapperMainScreenState
 
             const SizedBox(height: 10),
 
+            // Search Field
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: TextField(
+                // ignore: unnecessary_null_comparison
+                controller: (_searchController == null)? _searchController : _barcodeController,
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.search),
+                  hintText: 'Search products...',
+
+                  suffixIcon: IconButton(
+                    onPressed: () async {
+                      final String? scannedCode = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const BarcodeScannerScreen(),
+                        ),
+                      );
+                      if (scannedCode != null) {
+                        setState(() {
+                          _barcodeController.text = scannedCode;
+                          _searchQuery = scannedCode;
+                        });
+                      }
+                    },
+                    icon: Icon(Icons.qr_code_scanner),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 0,
+                  ),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    _searchQuery = value;
+                  });
+                },
+              ),
+            ),
+
+            const SizedBox(height: 10),
+
             // Product List or Grid
             Expanded(
               child: Padding(
@@ -118,9 +196,9 @@ class _MobileWrapperMainScreenState
                 child:
                     _currentIndex == 0
                         ? ListView.builder(
-                          itemCount: item.product.length,
+                          itemCount: filteredProducts.length,
                           itemBuilder: (context, index) {
-                            final data = item.product[index];
+                            final data = filteredProducts[index];
                             return Padding(
                               padding: const EdgeInsets.only(top: 4),
                               child: ListTile(
@@ -157,7 +235,7 @@ class _MobileWrapperMainScreenState
                           },
                         )
                         : GridView.builder(
-                          itemCount: item.product.length,
+                          itemCount: filteredProducts.length,
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
@@ -166,7 +244,7 @@ class _MobileWrapperMainScreenState
                                 childAspectRatio: 0.85,
                               ),
                           itemBuilder: (context, index) {
-                            final data = item.product[index];
+                            final data = filteredProducts[index];
                             return GestureDetector(
                               onTap: () {
                                 ref
@@ -248,6 +326,8 @@ class _MobileWrapperMainScreenState
       ),
 
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.blueAccent,
+        
         currentIndex: _currentIndex,
         onTap: (int index) {
           setState(() {
@@ -256,12 +336,12 @@ class _MobileWrapperMainScreenState
         },
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.view_list),
+            icon: Icon(Icons.view_list,color: Colors.white,),
             label: "List View",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.grid_view),
-            label: "Grid View",
+            icon: Icon(Icons.grid_view,color: Colors.white,),
+            label : "Grid View",
           ),
         ],
       ),
