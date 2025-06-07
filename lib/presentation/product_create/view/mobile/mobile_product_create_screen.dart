@@ -127,13 +127,13 @@ class _MobileProductCreateScreenState
                   labelText: "Name",
                   hintText: "Name",
                   contentPadding: EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 12,
+                    horizontal: 10,
+                    vertical: 10,
                   ),
                 ),
               ),
 
-              const SizedBox(height: 8),
+              const SizedBox(height: 10),
 
               TextField(
                 controller: _categoryController,
@@ -142,7 +142,7 @@ class _MobileProductCreateScreenState
                   hintText: "Category",
                   contentPadding: EdgeInsets.symmetric(
                     horizontal: 12,
-                    vertical: 12,
+                    vertical: 10,
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(6.0),
@@ -213,7 +213,7 @@ class _MobileProductCreateScreenState
                       ),
                     ),
 
-                    const SizedBox(width: 20),
+                    const SizedBox(width: 10),
 
                     Expanded(
                       child: Column(
@@ -240,7 +240,7 @@ class _MobileProductCreateScreenState
                 ),
               ],
 
-              const SizedBox(height: 10),
+              const SizedBox(height: 6),
 
               Row(
                 children: [
@@ -253,7 +253,7 @@ class _MobileProductCreateScreenState
                         hintText: "Price",
                         contentPadding: EdgeInsets.symmetric(
                           horizontal: 12,
-                          vertical: 12,
+                          vertical: 10,
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(6.0),
@@ -271,7 +271,7 @@ class _MobileProductCreateScreenState
                         hintText: "Cost",
                         contentPadding: EdgeInsets.symmetric(
                           horizontal: 12,
-                          vertical: 12,
+                          vertical: 10,
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(6.0),
@@ -289,6 +289,9 @@ class _MobileProductCreateScreenState
                 decoration: InputDecoration(
                   labelText: "Bar Code",
                   hintText: "Bar Code",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6.0),
+                  ),
                   suffixIcon: IconButton(
                     onPressed: () async {
                       final String? scannedCode = await Navigator.push(
@@ -309,7 +312,7 @@ class _MobileProductCreateScreenState
 
                   contentPadding: EdgeInsets.symmetric(
                     horizontal: 12,
-                    vertical: 12,
+                    vertical: 10,
                   ),
                 ),
               ),

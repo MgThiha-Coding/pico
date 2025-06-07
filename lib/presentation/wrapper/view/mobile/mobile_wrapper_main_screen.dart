@@ -87,12 +87,13 @@ class _MobileWrapperMainScreenState
                       const Text(
                         "Charges",
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.white),
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                       Text(
                         "Items: ${cartItem.itemQty}",
-                        style:
-                            TextStyle(fontSize: 12, color: Colors.grey[200]),
+                        style: TextStyle(fontSize: 12, color: Colors.grey[200]),
                       ),
                     ],
                   ),
@@ -114,98 +115,132 @@ class _MobileWrapperMainScreenState
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 6),
-                child: _currentIndex == 0
-                    ? ListView.builder(
-                        itemCount: item.product.length,
-                        itemBuilder: (context, index) {
-                          final data = item.product[index];
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 4),
-                            child: ListTile(
-                              tileColor: Colors.grey[200],
+                child:
+                    _currentIndex == 0
+                        ? ListView.builder(
+                          itemCount: item.product.length,
+                          itemBuilder: (context, index) {
+                            final data = item.product[index];
+                            return Padding(
+                              padding: const EdgeInsets.only(top: 4),
+                              child: ListTile(
+                                tileColor: Colors.grey[200],
+                                onTap: () {
+                                  ref
+                                      .read(cartNotifierProvider.notifier)
+                                      .addtoCart(data);
+                                },
+                                leading:
+                                    data.imagePath != null
+                                        ? CircleAvatar(
+                                          backgroundImage: FileImage(
+                                            File(data.imagePath!),
+                                          ),
+                                        )
+                                        : CircleAvatar(
+                                          child: Icon(Icons.inventory),
+                                        ),
+                                title: Text(
+                                  data.name,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                ),
+                                subtitle: Row(
+                                  children: [
+                                    Text(data.price.toStringAsFixed(2)),
+                                    const SizedBox(width: 6),
+                                    Text(data.cost),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        )
+                        : GridView.builder(
+                          itemCount: item.product.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisSpacing: 8,
+                                crossAxisSpacing: 8,
+                                childAspectRatio: 0.85,
+                              ),
+                          itemBuilder: (context, index) {
+                            final data = item.product[index];
+                            return GestureDetector(
                               onTap: () {
                                 ref
                                     .read(cartNotifierProvider.notifier)
                                     .addtoCart(data);
                               },
-                              leading: data.imagePath != null
-                                  ? CircleAvatar(
-                                      backgroundImage:
-                                          FileImage(File(data.imagePath!)),
-                                    )
-                                  : CircleAvatar(child: Icon(Icons.inventory)),
-                              title: Text(
-                                data.name,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Stack(
+                                  children: [
+                                    // Background Image
+                                    Positioned.fill(
+                                      child:
+                                          data.imagePath != null
+                                              ? Image.file(
+                                                File(data.imagePath!),
+                                                fit: BoxFit.cover,
+                                              )
+                                              : Container(
+                                                color: Colors.grey[300],
+                                                child: Center(
+                                                  child: Icon(
+                                                    Icons.inventory,
+                                                    size: 40,
+                                                    color: Colors.grey[700],
+                                                  ),
+                                                ),
+                                              ),
+                                    ),
+
+                                    // Floating Name & Price Bar
+                                    Positioned(
+                                      left: 0,
+                                      right: 0,
+                                      bottom: 0,
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8,
+                                          vertical: 6,
+                                        ),
+                                        color: Colors.black.withOpacity(0.6),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              data.name,
+                                              style: const TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 14,
+                                              ),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            Text(
+                                              "${data.price.toStringAsFixed(2)} • ${data.cost}",
+                                              style: const TextStyle(
+                                                color: Colors.white70,
+                                                fontSize: 12,
+                                              ),
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              subtitle: Row(
-                                children: [
-                                  Text(data.price.toStringAsFixed(2)),
-                                  const SizedBox(width: 6),
-                                  Text(data.cost),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      )
-                    : GridView.builder(
-                        itemCount: item.product.length,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 8,
-                          crossAxisSpacing: 8,
-                          childAspectRatio: 0.85,
+                            );
+                          },
                         ),
-                        itemBuilder: (context, index) {
-                          final data = item.product[index];
-                          return GestureDetector(
-                            onTap: () {
-                              ref
-                                  .read(cartNotifierProvider.notifier)
-                                  .addtoCart(data);
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              padding: const EdgeInsets.all(8),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Center(
-                                    child: data.imagePath != null
-                                        ? CircleAvatar(
-                                            radius: 30,
-                                            backgroundImage: FileImage(
-                                                File(data.imagePath!)),
-                                          )
-                                        : CircleAvatar(
-                                            radius: 30,
-                                            child: Icon(Icons.inventory),
-                                          ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    data.name,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    "${data.price.toStringAsFixed(2)} • ${data.cost}",
-                                    style: TextStyle(fontSize: 12),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
               ),
             ),
           ],
