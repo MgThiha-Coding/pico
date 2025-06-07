@@ -19,7 +19,6 @@ class _MobileItemOverviewScreenState
   @override
   Widget build(BuildContext context) {
     final cartItem = ref.watch(cartNotifierProvider);
-    final item = ref.watch(productNotifierProvider);
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
@@ -58,9 +57,9 @@ class _MobileItemOverviewScreenState
           // Cart Item List
           Expanded(
             child: ListView.builder(
-              itemCount: item.product.length,
+              itemCount: cartItem.cart.length,
               itemBuilder: (context, index) {
-                final data = item.product[index];
+                final data = cartItem.cart[index];
                 final cartProduct = cartItem.cart.firstWhere(
                   (element) => element.name == data.name,
                   orElse: () => data,
@@ -95,6 +94,7 @@ class _MobileItemOverviewScreenState
                               TextButton(
                                onPressed: (){
                                  ref.read(productNotifierProvider.notifier).deleteProduct(data.id);
+                                 Navigator.pop(context);
                                },
                                child: Text("Remove",style: TextStyle( 
                                  color: Colors.red,fontWeight: FontWeight.bold

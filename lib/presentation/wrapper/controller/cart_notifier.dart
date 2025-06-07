@@ -36,23 +36,25 @@ class CartNotifier extends ChangeNotifier {
           price: product.price,
           cost: product.cost,
           id: product.id,
+          imagePath: product.imagePath,
           qty: product.qty > 0 ? product.qty : 1,
         ),
       );
+    
     }
-    notifyListeners();
+      notifyListeners();
   }
 
-  void reduceQty(ProductModel product){
-    int index = _cart.indexWhere((element)=> element.name == product.name);
-    if (index != -1){
-      if ( _cart[index].qty > 1){
+  void reduceQty(ProductModel product) {
+    int index = _cart.indexWhere((element) => element.name == product.name);
+    if (index != -1) {
+      if (_cart[index].qty > 1) {
         _cart[index].qty--;
-      } else{
+      } else {
         _cart.removeAt(index);
       }
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   double get totalPrice {

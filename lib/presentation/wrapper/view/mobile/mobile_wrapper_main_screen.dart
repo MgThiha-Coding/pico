@@ -17,12 +17,12 @@ class MobileWrapperMainScreen extends ConsumerStatefulWidget {
 
 class _MobileWrapperMainScreenState
     extends ConsumerState<MobileWrapperMainScreen> {
+  int _currentIndex = 0; // 0 = ListView, 1 = GridView
 
   @override
   Widget build(BuildContext context) {
     final item = ref.watch(productNotifierProvider);
     final cartItem = ref.watch(cartNotifierProvider);
-
 
     return Scaffold(
       appBar: AppBar(
@@ -31,7 +31,6 @@ class _MobileWrapperMainScreenState
         centerTitle: true,
         title: AppTitle(title: "Pico POS"),
         actions: [
-          // ItemKindCount
           GestureDetector(
             onTap: () {
               Navigator.push(
@@ -44,10 +43,6 @@ class _MobileWrapperMainScreenState
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                border: Border.all(color: Colors.white, width: 1.2),
-              ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -67,7 +62,6 @@ class _MobileWrapperMainScreenState
         ],
       ),
 
-      // App Drawer
       drawer: AppDrawer(),
 
       body: Padding(
@@ -79,9 +73,9 @@ class _MobileWrapperMainScreenState
             // Cart Summary
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              margin: const EdgeInsets.symmetric(horizontal: 6),
+              margin: const EdgeInsets.symmetric(horizontal: 3),
               decoration: BoxDecoration(
-                border: Border.all(width: 1),
+                color: Colors.blueAccent,
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Row(
@@ -92,11 +86,13 @@ class _MobileWrapperMainScreenState
                     children: [
                       const Text(
                         "Charges",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.white),
                       ),
                       Text(
                         "Items: ${cartItem.itemQty}",
-                        style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+                        style:
+                            TextStyle(fontSize: 12, color: Colors.grey[200]),
                       ),
                     ],
                   ),
@@ -105,7 +101,7 @@ class _MobileWrapperMainScreenState
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
-                      color: Colors.green,
+                      color: Colors.white,
                     ),
                   ),
                 ],
@@ -113,58 +109,126 @@ class _MobileWrapperMainScreenState
             ),
 
             const SizedBox(height: 10),
-            
-            // Product List
-            Expanded(
-              child: ListView.builder(
-                itemCount: item.product.length,
-                itemBuilder: (context, index) {
-                  final data = item.product[index];
-                 
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 4),
-                    child: ListTile(
-                      tileColor: Colors.grey[200],
-                      onTap: () {
-                        ref.read(cartNotifierProvider.notifier).addtoCart(data);
-                      },
-                     
-                      leading:
-                          data.imagePath != null
-                              ? CircleAvatar(
-                                backgroundImage: FileImage(
-                                  File(data.imagePath!),
-                                ),
-                              )
-                              : CircleAvatar(child: Icon(Icons.inventory)),
-                      title: Text(
-                        data.name,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                      ),
 
-                      subtitle: Row(
-                        children: [
-                          Text(
-                            data.price.toStringAsFixed(2),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            data.cost,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                          ),
-                        ],
+            // Product List or Grid
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6),
+                child: _currentIndex == 0
+                    ? ListView.builder(
+                        itemCount: item.product.length,
+                        itemBuilder: (context, index) {
+                          final data = item.product[index];
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 4),
+                            child: ListTile(
+                              tileColor: Colors.grey[200],
+                              onTap: () {
+                                ref
+                                    .read(cartNotifierProvider.notifier)
+                                    .addtoCart(data);
+                              },
+                              leading: data.imagePath != null
+                                  ? CircleAvatar(
+                                      backgroundImage:
+                                          FileImage(File(data.imagePath!)),
+                                    )
+                                  : CircleAvatar(child: Icon(Icons.inventory)),
+                              title: Text(
+                                data.name,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                              ),
+                              subtitle: Row(
+                                children: [
+                                  Text(data.price.toStringAsFixed(2)),
+                                  const SizedBox(width: 6),
+                                  Text(data.cost),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      )
+                    : GridView.builder(
+                        itemCount: item.product.length,
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 8,
+                          crossAxisSpacing: 8,
+                          childAspectRatio: 0.85,
+                        ),
+                        itemBuilder: (context, index) {
+                          final data = item.product[index];
+                          return GestureDetector(
+                            onTap: () {
+                              ref
+                                  .read(cartNotifierProvider.notifier)
+                                  .addtoCart(data);
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              padding: const EdgeInsets.all(8),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Center(
+                                    child: data.imagePath != null
+                                        ? CircleAvatar(
+                                            radius: 30,
+                                            backgroundImage: FileImage(
+                                                File(data.imagePath!)),
+                                          )
+                                        : CircleAvatar(
+                                            radius: 30,
+                                            child: Icon(Icons.inventory),
+                                          ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    data.name,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    "${data.price.toStringAsFixed(2)} • ${data.cost}",
+                                    style: TextStyle(fontSize: 12),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                    ),
-                  );
-                },
               ),
             ),
           ],
         ),
+      ),
+
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (int index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.view_list),
+            label: "List View",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.grid_view),
+            label: "Grid View",
+          ),
+        ],
       ),
     );
   }
