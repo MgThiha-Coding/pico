@@ -49,11 +49,11 @@ class _MobileWrapperMainScreenState
     _searchQuery.toLowerCase().trim();
     final filteredProducts =
         _searchQuery.isEmpty
-            ? item.product
-            : item.product.where((product) {
+            ? item.products
+            : item.products.where((product) {
               final query = _searchQuery.toLowerCase();
-              final name = product.name.toLowerCase();
-              final barcode = product.barcode.toString().toLowerCase();
+              final name = product.product.name.toLowerCase();
+              final barcode = product.product.barcode.toString().toLowerCase();
               return name.contains(query) || barcode.contains(query);
             }).toList();
 
@@ -205,28 +205,28 @@ class _MobileWrapperMainScreenState
                                 onTap: () {
                                   ref
                                       .read(cartNotifierProvider.notifier)
-                                      .addtoCart(data);
+                                      .addtoCart(data.product);
                                 },
                                 leading:
-                                    data.imagePath != null
+                                    data.product.imagePath != null
                                         ? CircleAvatar(
                                           backgroundImage: FileImage(
-                                            File(data.imagePath!),
+                                            File(data.product.imagePath!),
                                           ),
                                         )
                                         : CircleAvatar(
                                           child: Icon(Icons.inventory),
                                         ),
                                 title: Text(
-                                  data.name,
+                                  data.product.name,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
                                 ),
                                 subtitle: Row(
                                   children: [
-                                    Text(data.price.toStringAsFixed(2)),
+                                    Text(data.product.price.toStringAsFixed(2)),
                                     const SizedBox(width: 6),
-                                    Text(data.cost),
+                                    Text(data.product.cost),
                                   ],
                                 ),
                               ),
@@ -248,7 +248,7 @@ class _MobileWrapperMainScreenState
                               onTap: () {
                                 ref
                                     .read(cartNotifierProvider.notifier)
-                                    .addtoCart(data);
+                                    .addtoCart(data.product);
                               },
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
@@ -257,9 +257,9 @@ class _MobileWrapperMainScreenState
                                     // Background Image
                                     Positioned.fill(
                                       child:
-                                          data.imagePath != null
+                                          data.product.imagePath != null
                                               ? Image.file(
-                                                File(data.imagePath!),
+                                                File(data.product.imagePath!),
                                                 fit: BoxFit.cover,
                                               )
                                               : Container(
@@ -290,7 +290,7 @@ class _MobileWrapperMainScreenState
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              data.name,
+                                              data.product.name,
                                               style: const TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold,
@@ -300,7 +300,7 @@ class _MobileWrapperMainScreenState
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                             Text(
-                                              "${data.price.toStringAsFixed(2)} • ${data.cost}",
+                                              "${data.product.price.toStringAsFixed(2)} • ${data.product.cost}",
                                               style: const TextStyle(
                                                 color: Colors.white70,
                                                 fontSize: 12,

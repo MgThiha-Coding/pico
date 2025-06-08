@@ -95,7 +95,7 @@ class _MobileItemOverviewScreenState
                                  ),
                                   TextButton(
                                    onPressed: (){
-                                     ref.read(productNotifierProvider.notifier).deleteProduct(data.id);
+                                     ref.read(productNotifierProvider.notifier).deleteProductByHiveKey(data.id);
                                      Navigator.pop(context);
                                    },
                                    child: Text("Remove",style: TextStyle( 
@@ -172,7 +172,6 @@ class _MobileItemOverviewScreenState
                 width: double.infinity,
         
                 child: ElevatedButton(
-                  
                   onPressed: () {},
                   child: Text(
                     'Print Receipt',

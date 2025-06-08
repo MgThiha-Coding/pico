@@ -33,9 +33,9 @@ class _MobileDashboardScreenState extends ConsumerState<MobileDashboardScreen> {
 
     final filteredProducts =
         query.isEmpty
-            ? item.product
-            : item.product.where((product) {
-              final name = product.name.toLowerCase();
+            ? item.products
+            : item.products.where((product) {
+              final name = product.product.name.toLowerCase();
               return name.contains(query);
             }).toList();
 
@@ -107,32 +107,32 @@ class _MobileDashboardScreenState extends ConsumerState<MobileDashboardScreen> {
                         ? ListView.builder(
                           itemCount: filteredProducts.length,
                           itemBuilder: (context, index) {
-                            final data = filteredProducts[index];
+                             final data = filteredProducts[index];
                             return Padding(
                               padding: const EdgeInsets.only(top: 4),
                               child: ListTile(
                                 tileColor: Colors.grey[200],
 
                                 leading:
-                                    data.imagePath != null
+                                    data.product.imagePath != null
                                         ? CircleAvatar(
                                           backgroundImage: FileImage(
-                                            File(data.imagePath!),
+                                            File(data.product.imagePath!),
                                           ),
                                         )
                                         : const CircleAvatar(
                                           child: Icon(Icons.inventory),
                                         ),
                                 title: Text(
-                                  data.name,
+                                  data.product.name,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
                                 ),
                                 subtitle: Row(
                                   children: [
-                                    Text(data.price.toStringAsFixed(2)),
+                                    Text(data.product.price.toStringAsFixed(2)),
                                     const SizedBox(width: 6),
-                                    Text(data.cost),
+                                    Text(data.product.cost),
                                    
                                   ],
                                 ),
@@ -178,7 +178,7 @@ class _MobileDashboardScreenState extends ConsumerState<MobileDashboardScreen> {
                                                 ),
                                                 TextButton(
                                                   onPressed: () {
-                                                    ref.read(productNotifierProvider.notifier).deleteProduct(data.id);
+                                                    ref.read(productNotifierProvider.notifier).deleteProductByHiveKey(data.hiveKey);
                                                     Navigator.pop(context);
                                                   },
                                                   child: Text(
@@ -249,7 +249,7 @@ class _MobileDashboardScreenState extends ConsumerState<MobileDashboardScreen> {
                                                   productNotifierProvider
                                                       .notifier,
                                                 )
-                                                .deleteProduct(data.id);
+                                                .deleteProductByHiveKey(data.hiveKey);
                                             Navigator.pop(context);
                                           },
                                           child: Text(
@@ -269,9 +269,9 @@ class _MobileDashboardScreenState extends ConsumerState<MobileDashboardScreen> {
                                     // Background Image
                                     Positioned.fill(
                                       child:
-                                          data.imagePath != null
+                                          data.product.imagePath != null
                                               ? Image.file(
-                                                File(data.imagePath!),
+                                                File(data.product.imagePath!),
                                                 fit: BoxFit.cover,
                                               )
                                               : Container(
@@ -302,7 +302,7 @@ class _MobileDashboardScreenState extends ConsumerState<MobileDashboardScreen> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              data.name,
+                                              data.product.name,
                                               style: const TextStyle(
                                                 color: Colors.white,
                                                 fontWeight: FontWeight.bold,
@@ -312,7 +312,7 @@ class _MobileDashboardScreenState extends ConsumerState<MobileDashboardScreen> {
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                             Text(
-                                              "${data.price.toStringAsFixed(2)} • ${data.cost}",
+                                              "${data.product.price.toStringAsFixed(2)} • ${data.product.cost}",
                                               style: const TextStyle(
                                                 color: Colors.white70,
                                                 fontSize: 12,
