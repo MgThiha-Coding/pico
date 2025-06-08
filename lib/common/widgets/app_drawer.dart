@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pico_pos/presentation/product_create/view/mobile/mobile_product_create_screen.dart';
+import 'package:pico_pos/presentation/dashboard/view/mobile/mobile_dashboard_screen.dart';
 import 'package:pico_pos/presentation/wrapper/view/mobile/mobile_wrapper_main_screen.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -52,7 +52,7 @@ class AppDrawer extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MobileProductCreateScreen(),
+                  builder: (context) => MobileDashboardScreen(),
                 ),
               );
             },

@@ -69,7 +69,8 @@ class _MobileProductCreateScreenState
       final price = double.tryParse(_priceController.text) ?? 0;
       final cost = _costController.text;
       final barcode = _barcodeController.text;
-      final id = 1;
+      final id = DateTime.now().millisecondsSinceEpoch;
+
 
       ref
           .read(productNotifierProvider.notifier)
@@ -86,10 +87,7 @@ class _MobileProductCreateScreenState
             ),
           );
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => MobileWrapperMainScreen()),
-      );
+      Navigator.pop(context);
     }
   }
 
