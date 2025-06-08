@@ -8,7 +8,8 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Colors.grey[200],
+      surfaceTintColor: Colors.white,
+      
       child: Column(
         children: [
           DrawerHeader(
@@ -17,9 +18,10 @@ class AppDrawer extends StatelessWidget {
                 Text(
                   'Pico POS',
                   style: TextStyle(
-                    color: Colors.blueAccent,
+                  
                     fontWeight: FontWeight.w500,
                     fontSize: 18,
+                    color: Colors.white,
                   ),
                 ),
 
@@ -27,7 +29,7 @@ class AppDrawer extends StatelessWidget {
 
                 Text(
                   "Fast & Reliable",
-                  style: TextStyle(color: Colors.grey[700], fontSize: 14),
+                  style: TextStyle(color: Colors.white, fontSize: 14),
                 ),
               ],
             ),
@@ -43,8 +45,8 @@ class AppDrawer extends StatelessWidget {
               );
             },
             minTileHeight: 50,
-            leading: Icon(Icons.point_of_sale, color: Colors.blueAccent),
-            title: Text('Sales'),
+            leading: Icon(Icons.point_of_sale, color: Colors.white),
+            title: Text('Sales',style: TextStyle( color: Colors.white)),
           ),
 
           ListTile(
@@ -57,29 +59,29 @@ class AppDrawer extends StatelessWidget {
               );
             },
             minTileHeight: 50,
-            leading: Icon(Icons.inventory_2, color: Colors.blueAccent),
-            title: Text('Items'),
+            leading: Icon(Icons.inventory_2, color: Colors.white),
+            title: Text('Items',style: TextStyle( color: Colors.white)),
           ),
 
           ListTile(
             onTap: () {},
             minTileHeight: 50,
-            leading: const Icon(Icons.receipt_long, color: Colors.blueAccent),
-            title: const Text('Receipt'),
+            leading: const Icon(Icons.receipt_long, color: Colors.white),
+            title: const Text('Receipt',style: TextStyle( color: Colors.white),),
           ),
 
           ListTile(
             onTap: () {},
             minTileHeight: 50,
-            leading: const Icon(Icons.settings, color: Colors.blueAccent),
-            title: const Text('Settings'),
+            leading: const Icon(Icons.settings, color: Colors.white),
+            title: const Text('Settings',style: TextStyle( color: Colors.white),),
           ),
 
           ListTile(
             onTap: () {},
             minTileHeight: 50,
-            leading: const Icon(Icons.person, color: Colors.blueAccent),
-            title: const Text('Account'),
+            leading: const Icon(Icons.person, color: Colors.white),
+            title: const Text('Account',style: TextStyle( color: Colors.white)),
           ),
         ],
       ),

@@ -41,7 +41,7 @@ class _MobileDashboardScreenState extends ConsumerState<MobileDashboardScreen> {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blueAccent,
+      //  backgroundColor: Colors.blueAccent,
         shape: const CircleBorder(),
         onPressed: () {
           Navigator.push(
@@ -51,11 +51,10 @@ class _MobileDashboardScreenState extends ConsumerState<MobileDashboardScreen> {
             ),
           );
         },
-        child: const Icon(Icons.add, color: Colors.white),
+        child: const Icon(Icons.add,color: Colors.white,),
       ),
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
-        backgroundColor: Colors.blueAccent,
         centerTitle: true,
         title: const AppTitle(title: "Dashboard"),
       ),
@@ -72,7 +71,7 @@ class _MobileDashboardScreenState extends ConsumerState<MobileDashboardScreen> {
                 controller: _searchController,
                 decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.search),
-                  hintText: 'Search products...',
+                  hintText: 'Search...',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),

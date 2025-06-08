@@ -60,7 +60,6 @@ class _MobileWrapperMainScreenState
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
-        backgroundColor: Colors.blueAccent,
         centerTitle: true,
         title: AppTitle(title: "Pico POS"),
         actions: [
@@ -98,7 +97,7 @@ class _MobileWrapperMainScreenState
       drawer: AppDrawer(),
 
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         child: Column(
           children: [
             const SizedBox(height: 6),
@@ -106,9 +105,8 @@ class _MobileWrapperMainScreenState
             // Cart Summary
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-              margin: const EdgeInsets.symmetric(horizontal: 3),
               decoration: BoxDecoration(
-                color: Colors.blueAccent,
+              color: Colors.blueGrey,
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Row(
@@ -142,17 +140,18 @@ class _MobileWrapperMainScreenState
               ),
             ),
 
-            const SizedBox(height: 10),
+            const SizedBox(height: 6),
 
             // Search Field
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.symmetric(vertical: 1),
               child: TextField(
                 // ignore: unnecessary_null_comparison
                 controller: (_searchController == null)? _searchController : _barcodeController,
                 decoration: InputDecoration(
+                  
                   prefixIcon: Icon(Icons.search),
-                  hintText: 'Search products...',
+                  hintText: 'Search...',
 
                   suffixIcon: IconButton(
                     onPressed: () async {
@@ -172,7 +171,7 @@ class _MobileWrapperMainScreenState
                     icon: Icon(Icons.qr_code_scanner),
                   ),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(4),
                   ),
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 12,
@@ -187,12 +186,12 @@ class _MobileWrapperMainScreenState
               ),
             ),
 
-            const SizedBox(height: 10),
+            const SizedBox(height: 6),
 
             // Product List or Grid
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 6),
+                padding: const EdgeInsets.symmetric(vertical: 1),
                 child:
                     _currentIndex == 0
                         ? ListView.builder(
@@ -326,8 +325,6 @@ class _MobileWrapperMainScreenState
       ),
 
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.blueAccent,
-        
         currentIndex: _currentIndex,
         onTap: (int index) {
           setState(() {
@@ -336,11 +333,11 @@ class _MobileWrapperMainScreenState
         },
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.view_list,color: Colors.white,),
+            icon: Icon(Icons.view_list,),
             label: "List View",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.grid_view,color: Colors.white,),
+            icon: Icon(Icons.grid_view,),
             label : "Grid View",
           ),
         ],

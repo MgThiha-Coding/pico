@@ -22,7 +22,7 @@ class _MobileItemOverviewScreenState
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
-        backgroundColor: Colors.blueAccent,
+      
         centerTitle: true,
         title: AppTitle(title: "Pico POS"),
         actions: [
@@ -52,135 +52,137 @@ class _MobileItemOverviewScreenState
         ],
       ),
 
-      body: Column(
-        children: [
-          // Cart Item List
-          Expanded(
-            child: ListView.builder(
-              itemCount: cartItem.cart.length,
-              itemBuilder: (context, index) {
-                final data = cartItem.cart[index];
-                final cartProduct = cartItem.cart.firstWhere(
-                  (element) => element.name == data.name,
-                  orElse: () => data,
-                );
-                final qty = cartProduct.qty;
-                final subtotal = qty * data.price;
-                
-                return Padding(
-                  padding: const EdgeInsets.only(top: 4),
-                  child: ListTile(
-                    onLongPress: (){
-                      showDialog(context: context, builder: (context){
-                        return AlertDialog(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)
-                          ),
-                          titleTextStyle: TextStyle(fontSize: 
-                          18,color: Colors.red),
-                          actionsAlignment: MainAxisAlignment.spaceEvenly,
-                          title: Text('Remove Item',),
-                          content: Text("Are you sure you want to remove ${data.name} from the cart?"),
-                          actions: [ 
-                             TextButton(
-                               onPressed: (){
-                                 Navigator.pop(context);
-                               },
-                               child: Text("Cancel",style: TextStyle( 
-                                 color: Colors.blueAccent,fontWeight: FontWeight.bold,
-                               ),),
-                               
-                             ),
-                              TextButton(
-                               onPressed: (){
-                                 ref.read(productNotifierProvider.notifier).deleteProduct(data.id);
-                                 Navigator.pop(context);
-                               },
-                               child: Text("Remove",style: TextStyle( 
-                                 color: Colors.red,fontWeight: FontWeight.bold
-                               ),),
-                               
-                             )
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            // Cart Item List
+            Expanded(
+                child: ListView.builder(
+                  itemCount: cartItem.cart.length,
+                  itemBuilder: (context, index) {
+                    final data = cartItem.cart[index];
+                    final cartProduct = cartItem.cart.firstWhere(
+                      (element) => element.name == data.name,
+                      orElse: () => data,
+                    );
+                    final qty = cartProduct.qty;
+                    final subtotal = qty * data.price;
+                    
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      child: ListTile(
+                        onLongPress: (){
+                          showDialog(context: context, builder: (context){
+                            return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)
+                              ),
+                              titleTextStyle: TextStyle(fontSize: 
+                              18,color: Colors.red),
+                              actionsAlignment: MainAxisAlignment.spaceEvenly,
+                              title: Text('Remove Item',),
+                              content: Text("Are you sure you want to remove ${data.name} from the cart?"),
+                              actions: [ 
+                                 TextButton(
+                                   onPressed: (){
+                                     Navigator.pop(context);
+                                   },
+                                   child: Text("Cancel",style: TextStyle( 
+                                     color: Colors.blueAccent,fontWeight: FontWeight.bold,
+                                   ),),
+                                   
+                                 ),
+                                  TextButton(
+                                   onPressed: (){
+                                     ref.read(productNotifierProvider.notifier).deleteProduct(data.id);
+                                     Navigator.pop(context);
+                                   },
+                                   child: Text("Remove",style: TextStyle( 
+                                     color: Colors.red,fontWeight: FontWeight.bold
+                                   ),),
+                                   
+                                 )
+                              ],
+                            );
+                          });
+                        },
+                        tileColor: Colors.grey[200],
+                        leading:
+                            data.imagePath != null
+                                ? CircleAvatar(
+                                  backgroundImage: FileImage(File(data.imagePath!)),
+                                )
+                                : CircleAvatar(child: Icon(Icons.inventory)),
+                        title: Text(
+                          data.name,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
+                        subtitle:
+                            qty > 0
+                                ? Text('$qty × \$${subtotal.toStringAsFixed(2)}')
+                                : Text('Not in cart'),
+              
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              icon: Icon(Icons.remove),
+                              onPressed: () {
+                                ref
+                                    .read(cartNotifierProvider.notifier)
+                                    .reduceQty(data);
+                              },
+                            ),
+              
+                            IconButton(
+                              icon: Icon(Icons.add),
+                              onPressed: () {
+                             
+                                ref
+                                    .read(cartNotifierProvider.notifier)
+                                    .addtoCart(data);
+                              },
+                            ),
                           ],
-                        );
-                      });
-                    },
-                    tileColor: Colors.grey[200],
-                    leading:
-                        data.imagePath != null
-                            ? CircleAvatar(
-                              backgroundImage: FileImage(File(data.imagePath!)),
-                            )
-                            : CircleAvatar(child: Icon(Icons.inventory)),
-                    title: Text(
-                      data.name,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                    ),
-                    subtitle:
-                        qty > 0
-                            ? Text('$qty × \$${subtotal.toStringAsFixed(2)}')
-                            : Text('Not in cart'),
-
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.remove),
-                          onPressed: () {
-                            ref
-                                .read(cartNotifierProvider.notifier)
-                                .reduceQty(data);
-                          },
                         ),
-
-                        IconButton(
-                          icon: Icon(Icons.add),
-                          onPressed: () {
-                         
-                            ref
-                                .read(cartNotifierProvider.notifier)
-                                .addtoCart(data);
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-
-          const SizedBox(height: 19),
-          // Total Price
-          Text(
-            'Total: \$${cartItem.totalPrice.toStringAsFixed(2)}',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-              color: Colors.green,
-            ),
-          ),
-          // Print Receipt Button
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            child: SizedBox(
-              height: 50,
-              width: double.infinity,
-
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blueAccent,
+                      ),
+                    );
+                  },
                 ),
-                onPressed: () {},
-                child: Text(
-                  'Print Receipt',
-                  style: TextStyle(color: Colors.white),
+              ),
+            
+        
+            const SizedBox(height: 19),
+            // Total Price
+            Text(
+              'Total: \$${cartItem.totalPrice.toStringAsFixed(2)}',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+                color: Colors.green,
+              ),
+            ),
+            // Print Receipt Button
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: SizedBox(
+                height: 50,
+                width: double.infinity,
+        
+                child: ElevatedButton(
+                  
+                  onPressed: () {},
+                  child: Text(
+                    'Print Receipt',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

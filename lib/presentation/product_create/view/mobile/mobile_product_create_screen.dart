@@ -4,12 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:pico_pos/common/widgets/app_drawer.dart';
 import 'package:pico_pos/common/widgets/app_title.dart';
 import 'package:pico_pos/common/widgets/bar_code_scanner_screen.dart';
 import 'package:pico_pos/presentation/product_create/controller/product_notifier.dart';
 import 'package:pico_pos/presentation/product_create/model/product_model.dart';
-import 'package:pico_pos/presentation/wrapper/view/mobile/mobile_wrapper_main_screen.dart';
 
 class MobileProductCreateScreen extends ConsumerStatefulWidget {
   const MobileProductCreateScreen({super.key});
@@ -125,7 +123,6 @@ class _MobileProductCreateScreenState
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
-        backgroundColor: Colors.blueAccent,
         centerTitle: true,
         title: AppTitle(title: "New Sale"),
         actions: [
@@ -135,7 +132,7 @@ class _MobileProductCreateScreenState
           ),
         ],
       ),
-      drawer: AppDrawer(),
+    
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: SingleChildScrollView(
@@ -176,6 +173,7 @@ class _MobileProductCreateScreenState
                   } else if (categories.contains(newCat)) {
                     setState(() {
                       selectedCategory = newCat;
+                      
                     });
                   }
                 },
@@ -252,7 +250,7 @@ class _MobileProductCreateScreenState
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 10),
               TextField(
                 controller: _barcodeController,
                 decoration: InputDecoration(
@@ -286,9 +284,9 @@ class _MobileProductCreateScreenState
                 ),
               ),
 
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
 
-              Divider(),
+            
 
               Row(
                 children: [

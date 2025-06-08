@@ -42,7 +42,6 @@ class ProductNotifier extends ChangeNotifier {
     await box.delete(key);
     notifyListeners();
   }
- 
 }
 
 final productNotifierProvider = ChangeNotifierProvider<ProductNotifier>(
