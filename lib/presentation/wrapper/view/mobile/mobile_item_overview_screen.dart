@@ -30,19 +30,16 @@ class _MobileItemOverviewScreenState
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              border: Border.all(color: Colors.white, width: 1.2),
-            ),
+           
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.inventory_2_outlined, color: Colors.white),
+                Icon(Icons.inventory_2_outlined, color: Colors.amber),
                 const SizedBox(width: 8),
                 Text(
                   '${cartItem.itemKindCount} items',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.amber,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -69,83 +66,94 @@ class _MobileItemOverviewScreenState
                     final qty = cartProduct.qty;
                     final subtotal = qty * data.price;
                     
-                    return Padding(
-                      padding: const EdgeInsets.only(top: 4),
-                      child: ListTile(
-                        onLongPress: (){
-                          showDialog(context: context, builder: (context){
-                            return AlertDialog(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)
+                    return Container(
+                       decoration: BoxDecoration( 
+                                borderRadius: BorderRadius.circular(6),
+                                border: Border.all( width: 1, color : Color(0xFF44475A))
                               ),
-                              titleTextStyle: TextStyle(fontSize: 
-                              18,color: Colors.red),
-                              actionsAlignment: MainAxisAlignment.spaceEvenly,
-                              title: Text('Remove Item',),
-                              content: Text("Are you sure you want to remove ${data.name} from the cart?"),
-                              actions: [ 
-                                 TextButton(
-                                   onPressed: (){
-                                     Navigator.pop(context);
-                                   },
-                                   child: Text("Cancel",style: TextStyle( 
-                                     color: Colors.blueAccent,fontWeight: FontWeight.bold,
-                                   ),),
-                                   
-                                 ),
-                                  TextButton(
-                                   onPressed: (){
-                                     ref.read(productNotifierProvider.notifier).deleteProductByHiveKey(data.id);
-                                     Navigator.pop(context);
-                                   },
-                                   child: Text("Remove",style: TextStyle( 
-                                     color: Colors.red,fontWeight: FontWeight.bold
-                                   ),),
-                                   
-                                 )
-                              ],
-                            );
-                          });
-                        },
-                        tileColor: Colors.grey[200],
-                        leading:
-                            data.imagePath != null
-                                ? CircleAvatar(
-                                  backgroundImage: FileImage(File(data.imagePath!)),
-                                )
-                                : CircleAvatar(child: Icon(Icons.inventory)),
-                        title: Text(
-                          data.name,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                        ),
-                        subtitle:
-                            qty > 0
-                                ? Text('$qty × \$${subtotal.toStringAsFixed(2)}')
-                                : Text('Not in cart'),
-              
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.remove),
-                              onPressed: () {
-                                ref
-                                    .read(cartNotifierProvider.notifier)
-                                    .reduceQty(data);
-                              },
-                            ),
-              
-                            IconButton(
-                              icon: Icon(Icons.add),
-                              onPressed: () {
-                             
-                                ref
-                                    .read(cartNotifierProvider.notifier)
-                                    .addtoCart(data);
-                              },
-                            ),
-                          ],
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: ListTile(
+                          onLongPress: (){
+                            showDialog(context: context, builder: (context){
+                              return AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)
+                                ),
+                                titleTextStyle: TextStyle(fontSize: 
+                                18,color: Colors.red),
+                                actionsAlignment: MainAxisAlignment.spaceEvenly,
+                                title: Text('Remove Item',),
+                                content: Text("Are you sure you want to remove ${data.name} from the cart?"),
+                                actions: [ 
+                                   TextButton(
+                                     onPressed: (){
+                                       Navigator.pop(context);
+                                     },
+                                     child: Text("Cancel",style: TextStyle( 
+                                       color: Colors.blueAccent,fontWeight: FontWeight.bold,
+                                     ),),
+                                     
+                                   ),
+                                    TextButton(
+                                     onPressed: (){
+                                       ref.read(cartNotifierProvider.notifier).deleteCartItem(data.id);
+                                       Navigator.pop(context);
+                                     },
+                                     child: Text("Remove",style: TextStyle( 
+                                       color: Colors.red,fontWeight: FontWeight.bold
+                                     ),),
+                                     
+                                   )
+                                ],
+                              );
+                            });
+                          },
+                           tileColor: Color(0xFF2A2D3E),
+                          leading:
+                              data.imagePath != null
+                                  ? CircleAvatar(
+                                    backgroundImage: FileImage(File(data.imagePath!)),
+                                  )
+                                  : CircleAvatar(child: Icon(Icons.inventory)),
+                          title: Text(
+                            data.name,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                             style: TextStyle( 
+                                       color : Colors.white,
+                                    ),
+                          ),
+                          subtitle:
+                              qty > 0
+                                  ? Text('$qty × \$${subtotal.toStringAsFixed(2)}',style: TextStyle( 
+                                         color: Colors.amber
+                                      ),)
+                                  : Text('Not in cart'),
+                                    
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.remove,color: Colors.redAccent,),
+                                onPressed: () {
+                                  ref
+                                      .read(cartNotifierProvider.notifier)
+                                      .reduceQty(data);
+                                },
+                              ),
+                                    
+                              IconButton(
+                                icon: Icon(Icons.add,color: Color(0xFF2697FF),),
+                                onPressed: () {
+                               
+                                  ref
+                                      .read(cartNotifierProvider.notifier)
+                                      .addtoCart(data);
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     );

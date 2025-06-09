@@ -57,6 +57,10 @@ class CartNotifier extends ChangeNotifier {
     }
   }
 
+  void deleteCartItem(int id)async{
+     _cart.removeAt(id);
+  }
+
   double get totalPrice {
     double total = 0.0;
     for (var item in _cart) {

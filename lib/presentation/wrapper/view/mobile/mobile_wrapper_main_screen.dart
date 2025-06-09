@@ -24,18 +24,6 @@ class _MobileWrapperMainScreenState
   String _searchQuery = '';
 
   @override
-  void initState() {
-    super.initState();
-    _barcodeController.addListener(() {
-      if (_barcodeController.text.isEmpty) {
-        setState(() {
-          _searchQuery = '';
-        });
-      }
-    });
-  }
-
-  @override
   void dispose() {
     _barcodeController.dispose();
     _searchController.dispose();
@@ -53,8 +41,7 @@ class _MobileWrapperMainScreenState
             : item.products.where((product) {
               final query = _searchQuery.toLowerCase();
               final name = product.product.name.toLowerCase();
-              final barcode = product.product.barcode.toString().toLowerCase();
-              return name.contains(query) || barcode.contains(query);
+              return name.contains(query);
             }).toList();
 
     return Scaffold(
@@ -78,12 +65,12 @@ class _MobileWrapperMainScreenState
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.inventory_2_outlined, color: Colors.white),
+                  Icon(Icons.inventory_2_outlined, color: Colors.amber),
                   const SizedBox(width: 8),
                   Text(
-                    '${cartItem.itemKindCount} items',
+                    '${cartItem.itemKindCount} ',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.amber,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -106,83 +93,97 @@ class _MobileWrapperMainScreenState
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
               decoration: BoxDecoration(
-              color: Colors.blueGrey,
-                borderRadius: BorderRadius.circular(4),
+                color: Color(0xFF2A2D3E),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(width: 1, color: Colors.white),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        "Charges",
-                        style: TextStyle(
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Charges",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            "Items: ${cartItem.itemQty}",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey[200],
+                            ),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        '${(cartItem.totalPrice).toStringAsFixed(0)} ${cartItem.cart.isNotEmpty ? cartItem.cart.first.cost : ''}',
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
+                          fontSize: 16,
                           color: Colors.white,
                         ),
                       ),
-                      Text(
-                        "Items: ${cartItem.itemQty}",
-                        style: TextStyle(fontSize: 12, color: Colors.grey[200]),
-                      ),
                     ],
                   ),
-                  Text(
-                    '${(cartItem.totalPrice).toStringAsFixed(2)} ${cartItem.cart.isNotEmpty ? cartItem.cart.first.cost : ''}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: Colors.white,
+                    const SizedBox(height: 8),
+                  TextField(
+                    controller: _searchController,
+                    style: TextStyle( 
+                       color: Colors.white
                     ),
+                    decoration: InputDecoration(
+                      fillColor: Colors.grey[800],
+                      filled: true,
+                      prefixIcon: Icon(Icons.search,color : Color(0xFF2697FF)),
+                      hintText: 'Search...',
+                      hintStyle: TextStyle( 
+                        color: Colors.white,
+                      ),
+                      suffixIcon: IconButton(
+                        onPressed: () async {
+                          final String? scannedCode = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (context) => const BarcodeScannerScreen(),
+                            ),
+                          );
+                          ProductEntry? data;
+
+                          try {
+                            data = filteredProducts.firstWhere(
+                              (product) =>
+                                  product.product.barcode.toString() ==
+                                  scannedCode,
+                            );
+                          } catch (e) {
+                            data = null;
+                          }
+                        },
+                        icon: const Icon(Icons.qr_code_scanner,color : Color(0xFF2697FF)),
+                      ),
+
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 0,
+                      ),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        _searchQuery = value;
+                      });
+                    },
                   ),
                 ],
-              ),
-            ),
-
-            const SizedBox(height: 6),
-
-            // Search Field
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 1),
-              child: TextField(
-                // ignore: unnecessary_null_comparison
-                controller: (_searchController == null)? _searchController : _barcodeController,
-                decoration: InputDecoration(
-                  
-                  prefixIcon: Icon(Icons.search),
-                  hintText: 'Search...',
-
-                  suffixIcon: IconButton(
-                    onPressed: () async {
-                      final String? scannedCode = await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const BarcodeScannerScreen(),
-                        ),
-                      );
-                      if (scannedCode != null) {
-                        setState(() {
-                          _barcodeController.text = scannedCode;
-                          _searchQuery = scannedCode;
-                        });
-                      }
-                    },
-                    icon: Icon(Icons.qr_code_scanner),
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 0,
-                  ),
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    _searchQuery = value;
-                  });
-                },
               ),
             ),
 
@@ -192,42 +193,66 @@ class _MobileWrapperMainScreenState
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 1),
-                child:
+                child: filteredProducts.isEmpty? Center( 
+                   child : Column( 
+                     mainAxisAlignment: MainAxisAlignment.center,
+                     children:[
+                        Icon(Icons.inventory_2,size : 35, color : Color(0xFF2697FF)),
+                        const SizedBox(height : 10),
+                        Text("No Products Found",style:TextStyle( 
+                           color : Colors.white,
+                        )),
+                     ]
+                   )
+                ) : 
                     _currentIndex == 0
                         ? ListView.builder(
                           itemCount: filteredProducts.length,
                           itemBuilder: (context, index) {
                             final data = filteredProducts[index];
-                            return Padding(
-                              padding: const EdgeInsets.only(top: 4),
-                              child: ListTile(
-                                tileColor: Colors.grey[200],
-                                onTap: () {
-                                  ref
-                                      .read(cartNotifierProvider.notifier)
-                                      .addtoCart(data.product);
-                                },
-                                leading:
-                                    data.product.imagePath != null
-                                        ? CircleAvatar(
-                                          backgroundImage: FileImage(
-                                            File(data.product.imagePath!),
+                            return Container(
+                              decoration: BoxDecoration( 
+                                borderRadius: BorderRadius.circular(6),
+                                border: Border.all( width: 1, color : Color(0xFF44475A))
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 4),
+                                child: ListTile(
+                                  tileColor: Color(0xFF35374A),
+                                  onTap: () {
+                                    ref
+                                        .read(cartNotifierProvider.notifier)
+                                        .addtoCart(data.product);
+                                  },
+                                  leading:
+                                      data.product.imagePath != null
+                                          ? CircleAvatar(
+                                            backgroundImage: FileImage(
+                                              File(data.product.imagePath!),
+                                            ),
+                                          )
+                                          : CircleAvatar(
+                                            child: Icon(Icons.inventory),
                                           ),
-                                        )
-                                        : CircleAvatar(
-                                          child: Icon(Icons.inventory),
-                                        ),
-                                title: Text(
-                                  data.product.name,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
-                                ),
-                                subtitle: Row(
-                                  children: [
-                                    Text(data.product.price.toStringAsFixed(2)),
-                                    const SizedBox(width: 6),
-                                    Text(data.product.cost),
-                                  ],
+                                  title: Text(
+                                    data.product.name,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    style: TextStyle( 
+                                       color : Colors.white,
+                                    ),
+                                  ),
+                                  subtitle: Row(
+                                    children: [
+                                      Text(data.product.price.toStringAsFixed(0),style: TextStyle( 
+                                         color : Colors.amber
+                                      ),),
+                                      const SizedBox(width: 6),
+                                      Text(data.product.cost,style: TextStyle( 
+                                         color: Colors.amber
+                                      ),),
+                                    ],
+                                  ),
                                 ),
                               ),
                             );
@@ -263,12 +288,12 @@ class _MobileWrapperMainScreenState
                                                 fit: BoxFit.cover,
                                               )
                                               : Container(
-                                                color: Colors.grey[300],
+                                                color:  Color(0xFF44475A),
                                                 child: Center(
                                                   child: Icon(
                                                     Icons.inventory,
                                                     size: 40,
-                                                    color: Colors.grey[700],
+                                                    color: Colors.amber,
                                                   ),
                                                 ),
                                               ),
@@ -284,6 +309,7 @@ class _MobileWrapperMainScreenState
                                           horizontal: 8,
                                           vertical: 6,
                                         ),
+                                        // ignore: deprecated_member_use
                                         color: Colors.black.withOpacity(0.6),
                                         child: Column(
                                           crossAxisAlignment:
@@ -302,7 +328,7 @@ class _MobileWrapperMainScreenState
                                             Text(
                                               "${data.product.price.toStringAsFixed(2)} • ${data.product.cost}",
                                               style: const TextStyle(
-                                                color: Colors.white70,
+                                                color: Colors.amber,
                                                 fontSize: 12,
                                               ),
                                               maxLines: 1,
@@ -333,12 +359,12 @@ class _MobileWrapperMainScreenState
         },
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.view_list,),
-            label: "List View",
+            icon: Icon(Icons.view_list),
+            label: "List",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.grid_view,),
-            label : "Grid View",
+            icon: Icon(Icons.grid_view),
+            label: "Grid",
           ),
         ],
       ),

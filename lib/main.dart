@@ -36,9 +36,9 @@ class MyApp extends ConsumerWidget {
       // LIGHT THEME
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
-        scaffoldBackgroundColor: Colors.grey[100], // default background
+        scaffoldBackgroundColor:  Color(0xFF2A2D3E), // default background
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.blueGrey, // appbar bg color
+          backgroundColor:  Color(0xFF2A2D3E),  // appbar bg color
           foregroundColor: Colors.white, // appbar text/icon color
           elevation: 4,
           centerTitle: true,
@@ -59,18 +59,18 @@ class MyApp extends ConsumerWidget {
         floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: Colors.blueGrey,
         ),
-        drawerTheme: DrawerThemeData(backgroundColor: Colors.blueGrey),
+        drawerTheme: DrawerThemeData(backgroundColor: Color(0xFF2A2D3E)),
         bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          backgroundColor: Colors.blueGrey,
-          selectedIconTheme: const IconThemeData(color: Colors.yellow),
+          backgroundColor:    Color(0xFF2A2D3E), 
+          selectedIconTheme: const IconThemeData(color: Colors.amber),
           unselectedIconTheme: const IconThemeData(color: Colors.white),
-          selectedItemColor: Colors.yellow,
+          selectedItemColor:  Colors.amber,
           unselectedItemColor: Colors.white,
         ),
 
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blueGrey,
+            backgroundColor: Color(0xFF2697FF),
             foregroundColor: Colors.white,
             textStyle: const TextStyle(
               fontSize: 16,

@@ -8,7 +8,7 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      surfaceTintColor: Colors.white,
+     
       
       child: Column(
         children: [

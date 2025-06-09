@@ -43,6 +43,7 @@ class _MobileDashboardScreenState extends ConsumerState<MobileDashboardScreen> {
       floatingActionButton: FloatingActionButton(
       //  backgroundColor: Colors.blueAccent,
         shape: const CircleBorder(),
+        backgroundColor:  Color(0xFF2697FF),
         onPressed: () {
           Navigator.push(
             context,
@@ -68,10 +69,17 @@ class _MobileDashboardScreenState extends ConsumerState<MobileDashboardScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: TextField(
+                
+
                 controller: _searchController,
                 decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.search),
+                   fillColor: Colors.grey[800],
+                      filled: true,
+                  prefixIcon: const Icon(Icons.search,color: Colors.white,),
                   hintText: 'Search...',
+                  hintStyle: TextStyle( 
+                     color: Colors.white,
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -108,94 +116,111 @@ class _MobileDashboardScreenState extends ConsumerState<MobileDashboardScreen> {
                           itemCount: filteredProducts.length,
                           itemBuilder: (context, index) {
                              final data = filteredProducts[index];
-                            return Padding(
-                              padding: const EdgeInsets.only(top: 4),
-                              child: ListTile(
-                                tileColor: Colors.grey[200],
-
-                                leading:
-                                    data.product.imagePath != null
-                                        ? CircleAvatar(
-                                          backgroundImage: FileImage(
-                                            File(data.product.imagePath!),
+                            return Container(
+                               decoration: BoxDecoration( 
+                                borderRadius: BorderRadius.circular(6),
+                                border: Border.all( width: 1, color : Color(0xFF44475A))
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 4),
+                                child: ListTile(
+                                  tileColor: Color(0xFF2A2D3E),
+                              
+                                  leading:
+                                      data.product.imagePath != null
+                                          ? CircleAvatar(
+                                            backgroundImage: FileImage(
+                                              File(data.product.imagePath!),
+                                            ),
+                                          )
+                                          : const CircleAvatar(
+                                            child: Icon(Icons.inventory),
                                           ),
-                                        )
-                                        : const CircleAvatar(
-                                          child: Icon(Icons.inventory),
-                                        ),
-                                title: Text(
-                                  data.product.name,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
-                                ),
-                                subtitle: Row(
-                                  children: [
-                                    Text(data.product.price.toStringAsFixed(2)),
-                                    const SizedBox(width: 6),
-                                    Text(data.product.cost),
-                                   
-                                  ],
-                                ),
-                                trailing: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.edit),
+                                  title: Text(
+                                    data.product.name,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                     style: TextStyle( 
+                                       color : Colors.white,
                                     ),
-                                    IconButton(
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              actionsAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(4),
-                                              ),
-                                              title: Text(
-                                                'Delete Confirmation',
-                                                style: TextStyle(
-                                                  color: Colors.red,
+                                  ),
+                                  subtitle: Row(
+                                    children: [
+                                      Text(data.product.price.toStringAsFixed(2),style: TextStyle( 
+                                         color: Colors.amber
+                                      ),),
+                                      const SizedBox(width: 6),
+                                      Text(data.product.cost,style: TextStyle( 
+                                         color: Colors.amber
+                                      ),),
+                                     
+                                    ],
+                                  ),
+                                  trailing: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {},
+                                        icon: const Icon(Icons.edit,color:  Color(0xFF2697FF),),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                backgroundColor: Color(0xFF2A2D3E),
+                                                actionsAlignment:
+                                                    MainAxisAlignment.spaceEvenly,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(4),
                                                 ),
-                                              ),
-                                              content: Text(
-                                                'Are you sure to delete this Item?',
-                                              ),
-                                              actions: [
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: Text(
-                                                    'Cancel',
-                                                    style: TextStyle(
-                                                      color: Colors.green,
-                                                    ),
+                                                title: Text(
+                                                  'Delete Confirmation',
+                                                  style: TextStyle(
+                                                    color: Colors.red,
                                                   ),
                                                 ),
-                                                TextButton(
-                                                  onPressed: () {
-                                                    ref.read(productNotifierProvider.notifier).deleteProductByHiveKey(data.hiveKey);
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: Text(
-                                                    'Delete',
-                                                    style: TextStyle(
-                                                      color: Colors.red,
-                                                    ),
+                                                content: Text(
+                                                  'Are you sure to delete this Item?',
+                                                  style: TextStyle( 
+                                                     color: Colors.white,
                                                   ),
                                                 ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      },
-                                      icon: const Icon(Icons.delete),
-                                    ),
-                                  ],
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Text(
+                                                      'Cancel',
+                                                      style: TextStyle(
+                                                        color: Colors.green,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      ref.read(productNotifierProvider.notifier).deleteProductByHiveKey(data.hiveKey);
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: Text(
+                                                      'Delete',
+                                                      style: TextStyle(
+                                                        color: Colors.red,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                        icon: const Icon(Icons.delete,color:  Color(0xFF2697FF),),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             );
@@ -218,6 +243,7 @@ class _MobileDashboardScreenState extends ConsumerState<MobileDashboardScreen> {
                                   context: context,
                                   builder: (context) {
                                     return AlertDialog(
+                                       backgroundColor: Color(0xFF2A2D3E),
                                       actionsAlignment:
                                           MainAxisAlignment.spaceEvenly,
                                       shape: RoundedRectangleBorder(
@@ -229,6 +255,9 @@ class _MobileDashboardScreenState extends ConsumerState<MobileDashboardScreen> {
                                       ),
                                       content: Text(
                                         'Are you sure to delete this Item?',
+                                        style: TextStyle( 
+                                           color: Colors.white
+                                        ),
                                       ),
                                       actions: [
                                         TextButton(
@@ -275,12 +304,12 @@ class _MobileDashboardScreenState extends ConsumerState<MobileDashboardScreen> {
                                                 fit: BoxFit.cover,
                                               )
                                               : Container(
-                                                color: Colors.grey[300],
+                                                color:  Color(0xFF44475A),
                                                 child: Center(
                                                   child: Icon(
                                                     Icons.inventory,
                                                     size: 40,
-                                                    color: Colors.grey[700],
+                                                       color: Colors.amber,
                                                   ),
                                                 ),
                                               ),
@@ -314,7 +343,7 @@ class _MobileDashboardScreenState extends ConsumerState<MobileDashboardScreen> {
                                             Text(
                                               "${data.product.price.toStringAsFixed(2)} • ${data.product.cost}",
                                               style: const TextStyle(
-                                                color: Colors.white70,
+                                                  color: Colors.amber,
                                                 fontSize: 12,
                                               ),
                                               maxLines: 1,

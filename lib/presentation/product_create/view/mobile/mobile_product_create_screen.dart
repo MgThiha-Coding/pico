@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -29,6 +30,7 @@ class _MobileProductCreateScreenState
   File? selectedImage;
   String? selectedCategory;
   List<String> categories = [];
+  bool isPicking = false;
 
   Future<void> pickImage() async {
     final pickedFile = await ImagePicker().pickImage(
@@ -41,6 +43,13 @@ class _MobileProductCreateScreenState
     }
   }
 
+  Future<File> _copyImage(String path) async {
+    final tempDir = await getApplicationDocumentsDirectory();
+    final targetPath =
+        '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
+    return await File(path).copy(targetPath);
+  }
+
   Future<File?> pickImageFromCamera() async {
     final picker = ImagePicker();
     final permission = await Permission.camera.request();
@@ -48,10 +57,7 @@ class _MobileProductCreateScreenState
 
     final XFile? photo = await picker.pickImage(source: ImageSource.camera);
     if (photo != null) {
-      final tempDir = await getApplicationDocumentsDirectory();
-      final targetPath =
-          '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.jpg';
-      return await File(photo.path).copy(targetPath);
+      return await compute(_copyImage, photo.path);
     }
     return null;
   }
@@ -69,7 +75,6 @@ class _MobileProductCreateScreenState
       final barcode = _barcodeController.text;
       final id = DateTime.now().millisecondsSinceEpoch;
 
-
       ref
           .read(productNotifierProvider.notifier)
           .createProduct(
@@ -81,7 +86,7 @@ class _MobileProductCreateScreenState
               cost: cost,
               id: id,
               qty: 1,
-              barcode: barcode
+              barcode: barcode,
             ),
           );
 
@@ -132,7 +137,7 @@ class _MobileProductCreateScreenState
           ),
         ],
       ),
-    
+
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         child: SingleChildScrollView(
@@ -141,11 +146,26 @@ class _MobileProductCreateScreenState
               TextField(
                 controller: _nameController,
                 decoration: InputDecoration(
+                  fillColor: Colors.grey[800],
+                  filled: true,
                   labelText: "Name",
                   hintText: "Name",
+                  labelStyle: TextStyle(color: Colors.white),
+                  hintStyle: TextStyle(color: Colors.white),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6.0),
+                    borderSide: BorderSide(width: 1, color: Colors.white),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6.0),
+                    borderSide: BorderSide(width: 1, color: Color(0xFF2697FF)),
+                  ),
                   contentPadding: EdgeInsets.symmetric(
                     horizontal: 10,
                     vertical: 10,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6.0),
                   ),
                 ),
               ),
@@ -157,6 +177,19 @@ class _MobileProductCreateScreenState
                 decoration: InputDecoration(
                   labelText: "Category",
                   hintText: "Type category and press Enter",
+                  fillColor: Colors.grey[800],
+                  filled: true,
+
+                  labelStyle: TextStyle(color: Colors.white),
+                  hintStyle: TextStyle(color: Colors.white),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6.0),
+                    borderSide: BorderSide(width: 1, color: Colors.white),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6.0),
+                    borderSide: BorderSide(width: 1, color: Color(0xFF2697FF)),
+                  ),
                   contentPadding: EdgeInsets.symmetric(
                     horizontal: 12,
                     vertical: 10,
@@ -173,7 +206,6 @@ class _MobileProductCreateScreenState
                   } else if (categories.contains(newCat)) {
                     setState(() {
                       selectedCategory = newCat;
-                      
                     });
                   }
                 },
@@ -184,12 +216,24 @@ class _MobileProductCreateScreenState
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(
                   labelText: "Select Category",
+                  fillColor: Colors.grey[800],
+                  filled: true,
+
+                  labelStyle: TextStyle(color: Colors.white),
+                  hintStyle: TextStyle(color: Colors.white),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6.0),
+                    borderSide: BorderSide(width: 1, color: Colors.white),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6.0),
+                    borderSide: BorderSide(width: 1, color: Color(0xFF2697FF)),
+                  ),
                   contentPadding: EdgeInsets.symmetric(
                     vertical: 10,
                     horizontal: 12,
                   ),
-                  fillColor: Colors.grey[200],
-                  filled: true,
+
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(6.0),
                   ),
@@ -220,6 +264,22 @@ class _MobileProductCreateScreenState
                       decoration: InputDecoration(
                         labelText: "Price",
                         hintText: "Price",
+                        fillColor: Colors.grey[800],
+                        filled: true,
+
+                        labelStyle: TextStyle(color: Colors.white),
+                        hintStyle: TextStyle(color: Colors.white),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(6.0),
+                          borderSide: BorderSide(width: 1, color: Colors.white),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(6.0),
+                          borderSide: BorderSide(
+                            width: 1,
+                            color: Color(0xFF2697FF),
+                          ),
+                        ),
                         suffixIcon: Icon(Icons.attach_money),
                         contentPadding: EdgeInsets.symmetric(
                           horizontal: 12,
@@ -238,6 +298,22 @@ class _MobileProductCreateScreenState
                       decoration: InputDecoration(
                         labelText: "Cost",
                         hintText: "Cost",
+                        fillColor: Colors.grey[800],
+                        filled: true,
+
+                        labelStyle: TextStyle(color: Colors.white),
+                        hintStyle: TextStyle(color: Colors.white),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(6.0),
+                          borderSide: BorderSide(width: 1, color: Colors.white),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(6.0),
+                          borderSide: BorderSide(
+                            width: 1,
+                            color: Color(0xFF2697FF),
+                          ),
+                        ),
                         contentPadding: EdgeInsets.symmetric(
                           horizontal: 12,
                           vertical: 10,
@@ -256,6 +332,19 @@ class _MobileProductCreateScreenState
                 decoration: InputDecoration(
                   labelText: "Bar Code",
                   hintText: "Bar Code",
+                  fillColor: Colors.grey[800],
+                  filled: true,
+
+                  labelStyle: TextStyle(color: Colors.white),
+                  hintStyle: TextStyle(color: Colors.white),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6.0),
+                    borderSide: BorderSide(width: 1, color: Colors.white),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6.0),
+                    borderSide: BorderSide(width: 1, color: Color(0xFF2697FF)),
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(6.0),
                   ),
@@ -272,10 +361,11 @@ class _MobileProductCreateScreenState
                           _barcodeController.text = scannedCode;
                         });
                       }
-                   
-
                     },
-                    icon: const Icon(Icons.qr_code_scanner),
+                    icon: const Icon(
+                      Icons.qr_code_scanner,
+                      color: Color(0xFF2697FF),
+                    ),
                   ),
                   contentPadding: EdgeInsets.symmetric(
                     horizontal: 12,
@@ -286,8 +376,6 @@ class _MobileProductCreateScreenState
 
               const SizedBox(height: 10),
 
-            
-
               Row(
                 children: [
                   Checkbox(
@@ -297,65 +385,84 @@ class _MobileProductCreateScreenState
                         isImageSelected = value!;
                       });
                     },
+                    activeColor: Color(0xFF2697FF),
+                    checkColor: Colors.white,
                   ),
-                  const Text("Image"),
-                  const SizedBox( width : 20),
+                  const Text(
+                    "Add Image",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  const SizedBox(width: 20),
                   if (isImageSelected) ...[
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: pickImage,
-                          icon: Icon(Icons.photo_library_outlined),
-                        ),
-                        SizedBox(width: 10),
-                        IconButton(
-                          onPressed: () async {
-                            File? imageFromCamera = await pickImageFromCamera();
-                            if (imageFromCamera != null) {
-                              setState(() {
-                                selectedImage = imageFromCamera;
-                              });
-                            }
-                          },
-                          icon: Icon(Icons.camera_alt),
-                        ),
-                      ],
+                    IconButton(
+                      onPressed: pickImage,
+                      icon: const Icon(
+                        Icons.photo_library_outlined,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    IconButton(
+                      onPressed: () async {
+                        if (isPicking) return;
+                        setState(() => isPicking = true);
+
+                        final image = await pickImageFromCamera();
+
+                        if (mounted) {
+                          setState(() {
+                            isPicking = false;
+                            if (image != null) selectedImage = image;
+                          });
+                        }
+                      },
+
+                      icon: const Icon(Icons.camera_alt, color: Colors.white),
                     ),
                   ],
                 ],
               ),
 
               const SizedBox(height: 18),
-              if (selectedImage != null) ...[
-                Row(
+              if (isImageSelected && selectedImage != null) ...[
+                const SizedBox(height: 16),
+                Stack(
                   children: [
-                    Expanded(
-                      child: Container(
-                        height: 140,
-                        padding: EdgeInsets.symmetric(horizontal: 8),
-                        child: Image.file(selectedImage!, fit: BoxFit.cover),
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: Colors.white24),
+                      ),
+                      clipBehavior: Clip.antiAlias,
+                      child: Image.file(
+                        selectedImage!,
+                        height: 200,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Selected Image'),
-                          SizedBox(height: 10),
-                          MaterialButton(
-                            color: Colors.blueAccent,
-                            onPressed: () {
-                              setState(() {
-                                selectedImage = null;
-                              });
-                            },
-                            child: Text(
-                              'Cancel',
-                              style: TextStyle(color: Colors.white),
-                            ),
+                    Positioned(
+                      top: 8,
+                      right: 8,
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedImage = null;
+                            isImageSelected = false;
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.black45,
+                            shape: BoxShape.circle,
                           ),
-                        ],
+                          padding: const EdgeInsets.all(4),
+                          child: const Icon(
+                            Icons.close,
+                            size: 20,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
                   ],
