@@ -126,7 +126,7 @@ class _MobileItemOverviewScreenState
                           subtitle:
                               qty > 0
                                   ? Text('$qty × \$${subtotal.toStringAsFixed(2)}',style: TextStyle( 
-                                         color: Colors.amber
+                                         color: Colors.green
                                       ),)
                                   : Text('Not in cart'),
                                     
