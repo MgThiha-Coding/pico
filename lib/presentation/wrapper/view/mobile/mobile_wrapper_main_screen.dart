@@ -154,17 +154,8 @@ class _MobileWrapperMainScreenState
                                   (context) => const BarcodeScannerScreen(),
                             ),
                           );
-                          ProductEntry? data;
 
-                          try {
-                            data = filteredProducts.firstWhere(
-                              (product) =>
-                                  product.product.barcode.toString() ==
-                                  scannedCode,
-                            );
-                          } catch (e) {
-                            data = null;
-                          }
+                         
                         },
                         icon: const Icon(Icons.qr_code_scanner,color : Color(0xFF2697FF)),
                       ),
@@ -245,11 +236,11 @@ class _MobileWrapperMainScreenState
                                   subtitle: Row(
                                     children: [
                                       Text(data.product.price.toStringAsFixed(0),style: TextStyle( 
-                                         color : Colors.amber
+                                         color : Colors.green,
                                       ),),
                                       const SizedBox(width: 6),
                                       Text(data.product.cost,style: TextStyle( 
-                                         color: Colors.amber
+                                         color: Colors.green
                                       ),),
                                     ],
                                   ),
@@ -293,7 +284,7 @@ class _MobileWrapperMainScreenState
                                                   child: Icon(
                                                     Icons.inventory,
                                                     size: 40,
-                                                    color: Colors.amber,
+                                                    color: Colors.green,
                                                   ),
                                                 ),
                                               ),
@@ -328,7 +319,7 @@ class _MobileWrapperMainScreenState
                                             Text(
                                               "${data.product.price.toStringAsFixed(2)} • ${data.product.cost}",
                                               style: const TextStyle(
-                                                color: Colors.amber,
+                                                color: Colors.green,
                                                 fontSize: 12,
                                               ),
                                               maxLines: 1,

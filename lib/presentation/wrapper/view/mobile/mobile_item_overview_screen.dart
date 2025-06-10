@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pico_pos/common/widgets/app_title.dart';
-import 'package:pico_pos/presentation/product_create/controller/product_notifier.dart';
 import 'package:pico_pos/presentation/wrapper/controller/cart_notifier.dart';
 
 class MobileItemOverviewScreen extends ConsumerStatefulWidget {

@@ -145,6 +145,7 @@ class _MobileProductCreateScreenState
             children: [
               TextField(
                 controller: _nameController,
+                style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   fillColor: Colors.grey[800],
                   filled: true,
@@ -174,6 +175,7 @@ class _MobileProductCreateScreenState
               // Category Text Input
               TextField(
                 controller: _categoryInputController,
+                style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   labelText: "Category",
                   hintText: "Type category and press Enter",
@@ -261,6 +263,7 @@ class _MobileProductCreateScreenState
                     flex: 2,
                     child: TextField(
                       controller: _priceController,
+                      style: TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         labelText: "Price",
                         hintText: "Price",
@@ -295,12 +298,12 @@ class _MobileProductCreateScreenState
                   Expanded(
                     child: TextField(
                       controller: _costController,
+                      style: TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         labelText: "Cost",
                         hintText: "Cost",
                         fillColor: Colors.grey[800],
                         filled: true,
-
                         labelStyle: TextStyle(color: Colors.white),
                         hintStyle: TextStyle(color: Colors.white),
                         focusedBorder: OutlineInputBorder(
@@ -329,6 +332,7 @@ class _MobileProductCreateScreenState
               const SizedBox(height: 10),
               TextField(
                 controller: _barcodeController,
+                style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   labelText: "Bar Code",
                   hintText: "Bar Code",

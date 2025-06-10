@@ -43,7 +43,8 @@ class _MobileDashboardScreenState extends ConsumerState<MobileDashboardScreen> {
       floatingActionButton: FloatingActionButton(
       //  backgroundColor: Colors.blueAccent,
         shape: const CircleBorder(),
-        backgroundColor:  Color(0xFF2697FF),
+       backgroundColor: Color(0xFF2697FF),
+
         onPressed: () {
           Navigator.push(
             context,
@@ -147,11 +148,11 @@ class _MobileDashboardScreenState extends ConsumerState<MobileDashboardScreen> {
                                   subtitle: Row(
                                     children: [
                                       Text(data.product.price.toStringAsFixed(2),style: TextStyle( 
-                                         color: Colors.amber
+                                         color: Colors.green
                                       ),),
                                       const SizedBox(width: 6),
                                       Text(data.product.cost,style: TextStyle( 
-                                         color: Colors.amber
+                                         color: Colors.green
                                       ),),
                                      
                                     ],
@@ -309,7 +310,7 @@ class _MobileDashboardScreenState extends ConsumerState<MobileDashboardScreen> {
                                                   child: Icon(
                                                     Icons.inventory,
                                                     size: 40,
-                                                       color: Colors.amber,
+                                                       color: Colors.green,
                                                   ),
                                                 ),
                                               ),
@@ -343,7 +344,7 @@ class _MobileDashboardScreenState extends ConsumerState<MobileDashboardScreen> {
                                             Text(
                                               "${data.product.price.toStringAsFixed(2)} • ${data.product.cost}",
                                               style: const TextStyle(
-                                                  color: Colors.amber,
+                                                  color: Colors.green,
                                                 fontSize: 12,
                                               ),
                                               maxLines: 1,
