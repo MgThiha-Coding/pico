@@ -29,7 +29,7 @@ class _MobileProductCreateScreenState
   bool isImageSelected = false;
   File? selectedImage;
   String? selectedCategory;
-  List<String> categories = [];
+  List<String> categories = ['Add Category', 'Category 1'];
   bool isPicking = false;
 
   Future<void> pickImage() async {
@@ -64,11 +64,12 @@ class _MobileProductCreateScreenState
 
   Future<void> save() async {
     if (_nameController.text.isNotEmpty &&
+        (_categoryInputController.text.isNotEmpty ||
+            selectedCategory != null) &&
         _priceController.text.isNotEmpty &&
-        _categoryInputController.text.isNotEmpty &&
         _costController.text.isNotEmpty) {
       final name = _nameController.text;
-      final category = _categoryInputController.text;
+      final category = selectedCategory ?? _categoryInputController.text;
       final imagePath = selectedImage?.path;
       final price = double.tryParse(_priceController.text) ?? 0;
       final cost = _costController.text;
@@ -94,37 +95,20 @@ class _MobileProductCreateScreenState
     }
   }
 
-  Future<void> _showAddCategoryDialog(String newCategory) async {
-    final shouldAdd = await showDialog<bool>(
-      context: context,
-      builder:
-          (context) => AlertDialog(
-            title: Text('Add New Category'),
-            content: Text('Do you want to add "$newCategory" to categories?'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: Text('Cancel'),
-              ),
-              ElevatedButton(
-                onPressed: () => Navigator.pop(context, true),
-                child: Text('Add'),
-              ),
-            ],
-          ),
-    );
-
-    if (shouldAdd == true && !categories.contains(newCategory)) {
-      setState(() {
-        categories.add(newCategory);
-        selectedCategory = newCategory;
-        _categoryInputController.text = newCategory;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final productState = ref.watch(productNotifierProvider);
+    final Set<String> categorySet = {
+      ...productState.products.map((e) => e.product.category),
+      if (selectedCategory != null) selectedCategory!,
+    };
+    final List<String> availableCategories = categorySet.toList();
+
+    if (!availableCategories.contains(selectedCategory)) {
+      selectedCategory =
+          availableCategories.isNotEmpty ? availableCategories.first : null;
+    }
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
@@ -172,57 +156,84 @@ class _MobileProductCreateScreenState
               ),
               const SizedBox(height: 10),
 
-              // Category Text Input
-              TextField(
-                controller: _categoryInputController,
-                style: TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  labelText: "Category",
-                  hintText: "Type category and press Enter",
-                  fillColor: Colors.grey[800],
-                  filled: true,
-
-                  labelStyle: TextStyle(color: Colors.white),
-                  hintStyle: TextStyle(color: Colors.white),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(6.0),
-                    borderSide: BorderSide(width: 1, color: Colors.white),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(6.0),
-                    borderSide: BorderSide(width: 1, color: Color(0xFF2697FF)),
-                  ),
-                  contentPadding: EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 10,
-                  ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(6.0),
-                  ),
-                  suffixIcon: Icon(Icons.inventory),
-                ),
-                onSubmitted: (value) {
-                  final newCat = value.trim();
-                  if (newCat.isNotEmpty && !categories.contains(newCat)) {
-                    _showAddCategoryDialog(newCat);
-                  } else if (categories.contains(newCat)) {
-                    setState(() {
-                      selectedCategory = newCat;
-                    });
-                  }
-                },
-              ),
-              const SizedBox(height: 10),
-
               // Dropdown for Category
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(
                   labelText: "Select Category",
                   fillColor: Colors.grey[800],
                   filled: true,
-
                   labelStyle: TextStyle(color: Colors.white),
                   hintStyle: TextStyle(color: Colors.white),
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            backgroundColor: Color(0xFF2A2D3E),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            title: Text(
+                              'Add Category',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            content: TextField(
+                              controller: _categoryInputController,
+                              style: TextStyle( 
+                                 color: Colors.white,
+                              ),
+                              decoration: InputDecoration(
+                                labelText: "Add Category",
+                                hintText: "Add Category",
+                                labelStyle: TextStyle(color: Colors.white),
+                                hintStyle: TextStyle(color: Colors.white),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                  borderSide: BorderSide(
+                                    width: 1,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            actionsAlignment: MainAxisAlignment.spaceEvenly,
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  'Save',
+                                  style: TextStyle(color: Colors.green),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  final newCategory =
+                                      _categoryInputController.text;
+                                  if (newCategory.isNotEmpty) {
+                                    setState(() {
+                                      selectedCategory = newCategory;
+                                    
+                                      availableCategories.add(newCategory);
+                                    });
+                                    _categoryInputController.clear();
+                                  }
+                                  Navigator.pop(context);
+                                },
+                                child: Text(
+                                  'Add',
+                                  style: TextStyle(color: Colors.amber),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    icon: Icon(Icons.add_rounded, color: Colors.white),
+                  ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(6.0),
                     borderSide: BorderSide(width: 1, color: Colors.white),
@@ -235,23 +246,23 @@ class _MobileProductCreateScreenState
                     vertical: 10,
                     horizontal: 12,
                   ),
-
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(6.0),
                   ),
                 ),
                 value: selectedCategory,
                 items:
-                    categories.map((category) {
+                    availableCategories.map((cat) {
                       return DropdownMenuItem<String>(
-                        value: category,
-                        child: Text(category),
+                        value: cat,
+                        child: Text(cat,style: TextStyle( 
+                           color: Colors.white
+                        ),),
                       );
                     }).toList(),
                 onChanged: (value) {
                   setState(() {
-                    selectedCategory = value;
-                    _categoryInputController.text = value ?? "";
+                    selectedCategory = value!;
                   });
                 },
               ),
@@ -269,7 +280,6 @@ class _MobileProductCreateScreenState
                         hintText: "Price",
                         fillColor: Colors.grey[800],
                         filled: true,
-
                         labelStyle: TextStyle(color: Colors.white),
                         hintStyle: TextStyle(color: Colors.white),
                         focusedBorder: OutlineInputBorder(
@@ -338,7 +348,6 @@ class _MobileProductCreateScreenState
                   hintText: "Bar Code",
                   fillColor: Colors.grey[800],
                   filled: true,
-
                   labelStyle: TextStyle(color: Colors.white),
                   hintStyle: TextStyle(color: Colors.white),
                   focusedBorder: OutlineInputBorder(
@@ -386,92 +395,36 @@ class _MobileProductCreateScreenState
                     value: isImageSelected,
                     onChanged: (value) {
                       setState(() {
-                        isImageSelected = value!;
+                        isImageSelected = value ?? false;
+                        if (!isImageSelected) {
+                          selectedImage = null;
+                        }
                       });
                     },
-                    activeColor: Color(0xFF2697FF),
-                    checkColor: Colors.white,
                   ),
-                  const Text(
-                    "Add Image",
-                    style: TextStyle(color: Colors.white),
+                  Text('Select Image', style: TextStyle(color: Colors.white)),
+                  const Spacer(),
+                  IconButton(
+                    icon: Icon(Icons.camera_alt, color: Colors.white),
+                    onPressed: () async {
+                      final image = await pickImageFromCamera();
+                      if (image != null) {
+                        setState(() {
+                          selectedImage = image;
+                          isImageSelected = true;
+                        });
+                      }
+                    },
                   ),
-                  const SizedBox(width: 20),
-                  if (isImageSelected) ...[
-                    IconButton(
-                      onPressed: pickImage,
-                      icon: const Icon(
-                        Icons.photo_library_outlined,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    IconButton(
-                      onPressed: () async {
-                        if (isPicking) return;
-                        setState(() => isPicking = true);
-
-                        final image = await pickImageFromCamera();
-
-                        if (mounted) {
-                          setState(() {
-                            isPicking = false;
-                            if (image != null) selectedImage = image;
-                          });
-                        }
-                      },
-
-                      icon: const Icon(Icons.camera_alt, color: Colors.white),
-                    ),
-                  ],
+                  IconButton(
+                    icon: Icon(Icons.photo_library, color: Colors.white),
+                    onPressed: pickImage,
+                  ),
                 ],
               ),
 
-              const SizedBox(height: 18),
-              if (isImageSelected && selectedImage != null) ...[
-                const SizedBox(height: 16),
-                Stack(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.white24),
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      child: Image.file(
-                        selectedImage!,
-                        height: 200,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    Positioned(
-                      top: 8,
-                      right: 8,
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            selectedImage = null;
-                            isImageSelected = false;
-                          });
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.black45,
-                            shape: BoxShape.circle,
-                          ),
-                          padding: const EdgeInsets.all(4),
-                          child: const Icon(
-                            Icons.close,
-                            size: 20,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+              if (isImageSelected && selectedImage != null)
+                Image.file(selectedImage!, height: 200),
             ],
           ),
         ),

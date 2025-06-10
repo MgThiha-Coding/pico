@@ -40,6 +40,8 @@ class ProductNotifier extends ChangeNotifier {
     }).toList();
   }
 
+  
+
   // You can keep cart list as is
   final List<ProductModel> _cart = [];
   List<ProductModel> get cart => UnmodifiableListView(_cart);

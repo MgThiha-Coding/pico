@@ -59,17 +59,18 @@ class MyApp extends ConsumerWidget {
         floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: Colors.blueGrey,
         ),
-        drawerTheme: DrawerThemeData(backgroundColor: Color(0xFF2A2D3E)),     
-       bottomNavigationBarTheme: BottomNavigationBarThemeData(
-  backgroundColor: Color(0xFF2A2D3E), // or Color(0xCC2A2D3E) for transparency
-  selectedIconTheme: IconThemeData(color: Colors.amber),
-  unselectedIconTheme: IconThemeData(color: Color(0xFFB0BEC5)),
-  selectedItemColor: Colors.amber,
-  unselectedItemColor: Color(0xFFB0BEC5),
-  selectedLabelStyle: TextStyle(fontWeight: FontWeight.w600),
-  unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
-),
-
+        drawerTheme: DrawerThemeData(backgroundColor: Color(0xFF2A2D3E)),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: Color(
+            0xFF2A2D3E,
+          ), // or Color(0xCC2A2D3E) for transparency
+          selectedIconTheme: IconThemeData(color: Colors.amber),
+          unselectedIconTheme: IconThemeData(color: Color(0xFFB0BEC5)),
+          selectedItemColor: Colors.amber,
+          unselectedItemColor: Color(0xFFB0BEC5),
+          selectedLabelStyle: TextStyle(fontWeight: FontWeight.w600),
+          unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
+        ),
 
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
