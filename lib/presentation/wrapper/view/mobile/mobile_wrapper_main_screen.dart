@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pico_pos/common/widgets/app_drawer.dart';
 import 'package:pico_pos/common/widgets/app_title.dart';
-import 'package:pico_pos/common/widgets/bar_code_scanner_screen.dart';
 import 'package:pico_pos/presentation/product_create/controller/product_notifier.dart';
 import 'package:pico_pos/presentation/wrapper/controller/cart_notifier.dart';
 import 'package:pico_pos/presentation/wrapper/view/mobile/mobile_item_overview_screen.dart';
@@ -146,16 +145,7 @@ class _MobileWrapperMainScreenState
                         color: Colors.white,
                       ),
                       suffixIcon: IconButton(
-                        onPressed: () async {
-                          final String? scannedCode = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder:
-                                  (context) => const BarcodeScannerScreen(),
-                            ),
-                          );
-
-                         
+                        onPressed: () async {                         
                         },
                         icon: const Icon(Icons.qr_code_scanner,color : Color(0xFF2697FF)),
                       ),

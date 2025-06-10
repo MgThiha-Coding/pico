@@ -36,10 +36,10 @@ class MyApp extends ConsumerWidget {
       // LIGHT THEME
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
-        scaffoldBackgroundColor: Color(0xFF2A2D3E), // default background
+        scaffoldBackgroundColor: Color(0xFF2A2D3E), 
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF2A2D3E), // appbar bg color
-          foregroundColor: Colors.white, // appbar text/icon color
+          backgroundColor: Color(0xFF2A2D3E), 
+          foregroundColor: Colors.white, 
           elevation: 4,
           centerTitle: true,
           titleTextStyle: TextStyle(
