@@ -83,7 +83,7 @@ class _MobileWrapperMainScreenState
       ),
 
       drawer: AppDrawer(),
-
+      
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         child: Column(
@@ -122,7 +122,8 @@ class _MobileWrapperMainScreenState
                           ),
                         ],
                       ),
-                      Text(
+                     
+                     Text(
                         '${cartItem.totalPrice.toStringAsFixed(0)} ${cartItem.cart.first.cost}',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
@@ -130,11 +131,12 @@ class _MobileWrapperMainScreenState
                           color: Colors.white,
                         ),
                       ),
+                      
                     ],
                   ),
 
                   const SizedBox(height: 8),
-
+               
                   TextField(
                     controller: _searchController,
                     style: const TextStyle(color: Colors.white),
@@ -171,10 +173,12 @@ class _MobileWrapperMainScreenState
                 ],
               ),
             ),
+          
 
             const SizedBox(height: 10),
 
             // Product List or Grid
+            
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 1),
@@ -186,9 +190,11 @@ class _MobileWrapperMainScreenState
                         : ProductGrid(filteredProducts),
               ),
             ),
+            
           ],
         ),
       ),
+      
 
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
