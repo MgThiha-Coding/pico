@@ -120,17 +120,20 @@ class _MobileWrapperMainScreenState
                               color: Colors.grey[200],
                             ),
                           ),
+                          
+                          
                         ],
                       ),
                      
                      Text(
-                        '${cartItem.totalPrice.toStringAsFixed(0)} ${cartItem.cart.first.cost}',
+                        cartItem.totalPrice.toStringAsFixed(0),
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                           color: Colors.white,
                         ),
                       ),
+                      
                       
                     ],
                   ),
