@@ -25,12 +25,15 @@ class _MobileWrapperMainScreenState
   final TextEditingController _barcodeController = TextEditingController();
   String _searchQuery = '';
 
+
   @override
   void dispose() {
     _barcodeController.dispose();
     _searchController.dispose();
     super.dispose();
   }
+
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -90,8 +93,7 @@ class _MobileWrapperMainScreenState
         child: Column(
           children: [
             const SizedBox(height: 6),
-
-            // Cart Summary
+            // Cart Summary Charges
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
               decoration: BoxDecoration(
@@ -134,68 +136,77 @@ class _MobileWrapperMainScreenState
                       ),
                     ],
                   ),
-
-                  const SizedBox(height: 8),
-
-                  TextField(
-                    controller: _searchController,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      fillColor: Colors.grey[800],
-                      filled: true,
-                      prefixIcon: const Icon(
-                        Icons.search,
-                        color: Color(0xFF2697FF),
-                      ),
-                      hintText: 'Search...',
-                      hintStyle: const TextStyle(color: Colors.white),
-                      suffixIcon: IconButton(
-                        onPressed: () async {
-                          final String? scannedCode = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder:
-                                  (context) => const BarcodeScannerScreen(),
-                            ),
-                          );
-                          if (scannedCode != null) {
-                            ProductEntry? matchedProduct;
-
-                            try {
-                              matchedProduct = item.products.firstWhere(
-                                (product) =>
-                                    product.product.barcode == scannedCode,
-                              );
-                            } catch (e) {
-                              matchedProduct = null;
-                            }
-
-                            ref
-                                .read(cartNotifierProvider.notifier)
-                                .addtoCart(matchedProduct!.product);
-                          }
-                        },
-                        icon: const Icon(
-                          Icons.qr_code_scanner,
-                          color: Color(0xFF2697FF),
-                        ),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 0,
-                      ),
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        _searchQuery = value;
-                      });
-                    },
-                  ),
                 ],
               ),
+            ),
+
+            const SizedBox(height: 10),
+
+            // Product SearchField
+            TextField(
+              controller: _searchController,
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                fillColor: Colors.grey[800],
+                filled: true,
+                prefixIcon: const Icon(
+                  Icons.search,
+                  color: Colors.amber,
+
+                  // Color(0xFF2697FF)
+                ),
+                hintText: 'Search...',
+                hintStyle: const TextStyle(color: Colors.white),
+                suffixIcon: IconButton(
+                  onPressed: () async {
+                    final String? scannedCode = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const BarcodeScannerScreen(),
+                      ),
+                    );
+                    if (scannedCode != null) {
+                      ProductEntry? matchedProduct;
+
+                      try {
+                        matchedProduct = item.products.firstWhere(
+                          (product) => product.product.barcode == scannedCode,
+                        );
+                      } catch (e) {
+                        matchedProduct = null;
+                      }
+
+                      ref
+                          .read(cartNotifierProvider.notifier)
+                          .addtoCart(matchedProduct!.product);
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MobileItemOverviewScreen(),
+                        ),
+                      );
+                    }
+                  },
+                  icon: const Icon(
+                    Icons.qr_code_scanner,
+                    color: Colors.amber,
+                    // Color(0xFF2697FF),
+                  ),
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 0,
+                ),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  _searchQuery = value;
+                });
+              },
             ),
 
             const SizedBox(height: 10),
