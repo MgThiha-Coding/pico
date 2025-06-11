@@ -208,8 +208,8 @@ class _MobileWrapperMainScreenState
                     filteredProducts.isEmpty
                         ? EmptyWidget()
                         : _currentIndex == 0
-                        ? ProductList(filteredProducts)
-                        : ProductGrid(filteredProducts),
+                        ? ProductGrid(filteredProducts)
+                        : ProductList(filteredProducts),
               ),
             ),
           ],
@@ -224,8 +224,8 @@ class _MobileWrapperMainScreenState
           });
         },
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.view_list), label: "List"),
           BottomNavigationBarItem(icon: Icon(Icons.grid_view), label: "Grid"),
+          BottomNavigationBarItem(icon: Icon(Icons.view_list), label: "List"),
         ],
       ),
     );

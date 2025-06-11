@@ -27,23 +27,72 @@ class _MobileItemOverviewScreenState
         title: AppTitle(title: "Pico POS"),
         actions: [
           // ItemKindCount
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          GestureDetector(
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    backgroundColor: Color(0xFF2A2D3E),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    actionsAlignment: MainAxisAlignment.spaceEvenly,
+                    title: Text(
+                      'Clear Cart',
+                      style: TextStyle(color: Colors.red),
+                    ),
+                    content: Text(
+                      'Are you sure to clear the Cart?',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          'Cancel',
+                          style: TextStyle(color: Colors.green),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          ref.read(cartNotifierProvider.notifier).clearCart();
+                          setState(() {
+                            
+                          });
+                          Navigator.pop(context);
+                        },
+                        child: Text(
+                          'Clear',
+                          style: TextStyle(color: Colors.amber),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
 
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.inventory_2_outlined, color: Colors.amber),
-                const SizedBox(width: 8),
-                Text(
-                  '${cartItem.itemKindCount} items',
-                  style: TextStyle(
-                    color: Colors.amber,
-                    fontWeight: FontWeight.bold,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.inventory_2_sharp, color: Colors.amber),
+
+                  const SizedBox(width: 8),
+                  Text(
+                    '${cartItem.itemKindCount} items',
+                    style: TextStyle(
+                      color: Colors.amber,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],
@@ -143,7 +192,10 @@ class _MobileItemOverviewScreenState
                             qty > 0
                                 ? Text(
                                   '$qty × \$${subtotal.toStringAsFixed(2)}',
-                                  style: TextStyle(color: Colors.green,fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 )
                                 : Text('Not in cart'),
 

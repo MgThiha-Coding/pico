@@ -59,6 +59,12 @@ class CartNotifier extends ChangeNotifier {
 
   void deleteCartItem(int id)async{
      _cart.removeAt(id);
+     notifyListeners();
+  }
+
+  void clearCart()async{
+    _cart.clear();
+    notifyListeners();
   }
 
   double get totalPrice {
