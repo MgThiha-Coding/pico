@@ -123,6 +123,7 @@ class _MobileItemOverviewScreenState
                     child: Padding(
                       padding: const EdgeInsets.only(top: 4),
                       child: ListTile(
+                        /*
                         onLongPress: () {
                           showDialog(
                             context: context,
@@ -173,6 +174,7 @@ class _MobileItemOverviewScreenState
                             },
                           );
                         },
+                        */
                         tileColor: Color(0xFF2A2D3E),
                         leading:
                             data.imagePath != null
