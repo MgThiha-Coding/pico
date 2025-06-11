@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pico_pos/common/widgets/app_drawer.dart';
 import 'package:pico_pos/common/widgets/app_title.dart';
+import 'package:pico_pos/common/widgets/bar_code_scanner_screen.dart';
 import 'package:pico_pos/features/product_create/controller/product_notifier.dart';
 import 'package:pico_pos/features/wrapper/controller/cart_notifier.dart';
 import 'package:pico_pos/features/wrapper/utils/empty_widget.dart';
@@ -83,7 +84,7 @@ class _MobileWrapperMainScreenState
       ),
 
       drawer: AppDrawer(),
-      
+
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         child: Column(
@@ -120,12 +121,10 @@ class _MobileWrapperMainScreenState
                               color: Colors.grey[200],
                             ),
                           ),
-                          
-                          
                         ],
                       ),
-                     
-                     Text(
+
+                      Text(
                         cartItem.totalPrice.toStringAsFixed(0),
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
@@ -133,13 +132,11 @@ class _MobileWrapperMainScreenState
                           color: Colors.white,
                         ),
                       ),
-                      
-                      
                     ],
                   ),
 
                   const SizedBox(height: 8),
-               
+
                   TextField(
                     controller: _searchController,
                     style: const TextStyle(color: Colors.white),
@@ -153,7 +150,31 @@ class _MobileWrapperMainScreenState
                       hintText: 'Search...',
                       hintStyle: const TextStyle(color: Colors.white),
                       suffixIcon: IconButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          final String? scannedCode = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder:
+                                  (context) => const BarcodeScannerScreen(),
+                            ),
+                          );
+                          if (scannedCode != null) {
+                            ProductEntry? matchedProduct;
+
+                            try {
+                              matchedProduct = item.products.firstWhere(
+                                (product) =>
+                                    product.product.barcode == scannedCode,
+                              );
+                            } catch (e) {
+                              matchedProduct = null;
+                            }
+
+                            ref
+                                .read(cartNotifierProvider.notifier)
+                                .addtoCart(matchedProduct!.product);
+                          }
+                        },
                         icon: const Icon(
                           Icons.qr_code_scanner,
                           color: Color(0xFF2697FF),
@@ -176,12 +197,10 @@ class _MobileWrapperMainScreenState
                 ],
               ),
             ),
-          
 
             const SizedBox(height: 10),
 
             // Product List or Grid
-            
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 1),
@@ -193,11 +212,9 @@ class _MobileWrapperMainScreenState
                         : ProductGrid(filteredProducts),
               ),
             ),
-            
           ],
         ),
       ),
-      
 
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
