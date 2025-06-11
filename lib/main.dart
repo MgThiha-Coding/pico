@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:pico_pos/presentation/wrapper/view/mobile/mobile_wrapper_main_screen.dart';
+import 'package:pico_pos/features/wrapper/view/mobile/mobile_wrapper_main_screen.dart';
 
 final themeNotifierProvider = StateNotifierProvider<ThemeNotifier, ThemeMode>(
   (ref) => ThemeNotifier(),
@@ -36,10 +36,10 @@ class MyApp extends ConsumerWidget {
       // LIGHT THEME
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
-        scaffoldBackgroundColor: Color(0xFF2A2D3E), 
+        scaffoldBackgroundColor: Color(0xFF2A2D3E),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF2A2D3E), 
-          foregroundColor: Colors.white, 
+          backgroundColor: Color(0xFF2A2D3E),
+          foregroundColor: Colors.white,
           elevation: 4,
           centerTitle: true,
           titleTextStyle: TextStyle(

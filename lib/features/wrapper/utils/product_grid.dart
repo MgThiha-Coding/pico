@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pico_pos/presentation/product_create/controller/product_notifier.dart';
-import 'package:pico_pos/presentation/wrapper/controller/cart_notifier.dart';
+import 'package:pico_pos/features/product_create/controller/product_notifier.dart';
+import 'package:pico_pos/features/wrapper/controller/cart_notifier.dart';
 
 class ProductGrid extends ConsumerStatefulWidget {
   final List<ProductEntry> filteredProducts;

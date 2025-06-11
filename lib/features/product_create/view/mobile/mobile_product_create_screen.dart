@@ -7,8 +7,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pico_pos/common/widgets/app_title.dart';
 import 'package:pico_pos/common/widgets/bar_code_scanner_screen.dart';
-import 'package:pico_pos/presentation/product_create/controller/product_notifier.dart';
-import 'package:pico_pos/presentation/product_create/model/product_model.dart';
+import 'package:pico_pos/features/product_create/controller/product_notifier.dart';
+import 'package:pico_pos/features/product_create/model/product_model.dart';
 
 class MobileProductCreateScreen extends ConsumerStatefulWidget {
   const MobileProductCreateScreen({super.key});

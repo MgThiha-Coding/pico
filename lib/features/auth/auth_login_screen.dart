@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pico_pos/common/responsive_widget.dart';
-import 'package:pico_pos/presentation/auth/mobile/mobile_auth_login_screen.dart';
-import 'package:pico_pos/presentation/auth/tablet/tablet_auth_login_screen.dart';
+import 'package:pico_pos/features/auth/mobile/mobile_auth_login_screen.dart';
+import 'package:pico_pos/features/auth/tablet/tablet_auth_login_screen.dart';
 
 class AuthLoginScreen extends StatefulWidget {
   const AuthLoginScreen({super.key});

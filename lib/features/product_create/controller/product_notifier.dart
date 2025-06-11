@@ -3,7 +3,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:pico_pos/presentation/product_create/model/product_model.dart';
+import 'package:pico_pos/features/product_create/model/product_model.dart';
 
 class ProductEntry {
   final int hiveKey;

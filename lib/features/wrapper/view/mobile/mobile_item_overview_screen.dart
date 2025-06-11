@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pico_pos/common/widgets/app_title.dart';
-import 'package:pico_pos/presentation/wrapper/controller/cart_notifier.dart';
-import 'package:pico_pos/presentation/wrapper/view/mobile/mobile_ticket_entry_screen.dart';
+import 'package:pico_pos/features/wrapper/controller/cart_notifier.dart';
+import 'package:pico_pos/features/wrapper/view/mobile/mobile_ticket_entry_screen.dart';
 
 class MobileItemOverviewScreen extends ConsumerStatefulWidget {
   const MobileItemOverviewScreen({super.key});

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pico_pos/common/widgets/app_drawer.dart';
 import 'package:pico_pos/common/widgets/app_title.dart';
-import 'package:pico_pos/presentation/product_create/view/mobile/mobile_product_create_screen.dart';
-import 'package:pico_pos/presentation/product_create/controller/product_notifier.dart';
+import 'package:pico_pos/features/product_create/view/mobile/mobile_product_create_screen.dart';
+import 'package:pico_pos/features/product_create/controller/product_notifier.dart';
 
 class MobileDashboardScreen extends ConsumerStatefulWidget {
   const MobileDashboardScreen({super.key});
