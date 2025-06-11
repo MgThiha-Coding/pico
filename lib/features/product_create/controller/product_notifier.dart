@@ -9,10 +9,7 @@ class ProductEntry {
   final int hiveKey;
   final ProductModel product;
 
-  ProductEntry({
-    required this.hiveKey,
-    required this.product,
-  });
+  ProductEntry({required this.hiveKey, required this.product});
 }
 
 class ProductNotifier extends ChangeNotifier {
@@ -31,16 +28,29 @@ class ProductNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Build list of ProductEntry (Hive key + product model)
-  List<ProductEntry> get products {
-    return box.keys.map((key) {
-      final productMap = Map<String, dynamic>.from(box.get(key));
-      final product = ProductModel.fromJson(productMap);
-      return ProductEntry(hiveKey: key as int, product: product);
-    }).toList();
-  }
 
-  
+  List<ProductEntry> get products {
+    return box.keys
+        .where((key) => key is int) 
+        .map((key) {
+          final value = box.get(key);
+          if (value is Map) {
+            try {
+              final productMap = Map<String, dynamic>.from(
+                value.map((k, v) => MapEntry(k.toString(), v)),
+              );
+              final product = ProductModel.fromJson(productMap);
+              return ProductEntry(hiveKey: key as int, product: product);
+            } catch (e) {
+              debugPrint('Error parsing product for key $key: $e');
+              return null;
+            }
+          }
+          return null;
+        })
+        .whereType<ProductEntry>()
+        .toList();
+  }
 
   // You can keep cart list as is
   final List<ProductModel> _cart = [];

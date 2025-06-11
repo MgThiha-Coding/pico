@@ -125,7 +125,7 @@ class _MobileWrapperMainScreenState
                       ),
 
                       Text(
-                        cartItem.totalPrice.toStringAsFixed(0),
+                        '${cartItem.totalPrice.toStringAsFixed(0)} ks',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
