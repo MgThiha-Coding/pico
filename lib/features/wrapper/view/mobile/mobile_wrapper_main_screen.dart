@@ -3,12 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pico_pos/common/widgets/app_drawer.dart';
 import 'package:pico_pos/common/widgets/app_title.dart';
 import 'package:pico_pos/common/widgets/bar_code_scanner_screen.dart';
+import 'package:pico_pos/common/widgets/empty_widget.dart';
 import 'package:pico_pos/features/product_create/controller/product_notifier.dart';
 import 'package:pico_pos/features/wrapper/controller/cart_notifier.dart';
-import 'package:pico_pos/features/wrapper/utils/empty_widget.dart';
-import 'package:pico_pos/features/wrapper/utils/product_grid.dart';
-import 'package:pico_pos/features/wrapper/utils/product_list.dart';
 import 'package:pico_pos/features/wrapper/view/mobile/mobile_item_overview_screen.dart';
+import 'package:pico_pos/features/wrapper/view/mobile/widgets/product_grid.dart';
+import 'package:pico_pos/features/wrapper/view/mobile/widgets/product_list.dart';
 
 class MobileWrapperMainScreen extends ConsumerStatefulWidget {
   const MobileWrapperMainScreen({super.key});
@@ -25,15 +25,12 @@ class _MobileWrapperMainScreenState
   final TextEditingController _barcodeController = TextEditingController();
   String _searchQuery = '';
 
-
   @override
   void dispose() {
     _barcodeController.dispose();
     _searchController.dispose();
     super.dispose();
   }
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +124,7 @@ class _MobileWrapperMainScreenState
                       ),
 
                       Text(
-                        '${cartItem.totalPrice.toStringAsFixed(0)} ks',
+                        '${cartItem.totalPrice.toStringAsFixed(0)}',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -159,12 +156,15 @@ class _MobileWrapperMainScreenState
                 hintStyle: const TextStyle(color: Colors.white),
                 suffixIcon: IconButton(
                   onPressed: () async {
+                    // Route to Barcode Scanner
                     final String? scannedCode = await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const BarcodeScannerScreen(),
                       ),
                     );
+
+                    // Match the Product by barcode
                     if (scannedCode != null) {
                       ProductEntry? matchedProduct;
 
@@ -176,16 +176,29 @@ class _MobileWrapperMainScreenState
                         matchedProduct = null;
                       }
 
-                      ref
-                          .read(cartNotifierProvider.notifier)
-                          .addtoCart(matchedProduct!.product);
+                      if (matchedProduct != null) {
+                        // add to cart
+                        ref
+                            .read(cartNotifierProvider.notifier)
+                            .addtoCart(matchedProduct.product);
+                        // show snackbar
+                        ScaffoldMessenger.of(
+                          context,
+                        ).showSnackBar(SnackBar(content: Text('Add to Cart')));
 
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MobileItemOverviewScreen(),
-                        ),
-                      );
+                        // route to cart
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MobileItemOverviewScreen(),
+                          ),
+                        );
+                      } else if (matchedProduct == null) {
+                        // show alert if matchproduct not found
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Product not found')),
+                        );
+                      }
                     }
                   },
                   icon: const Icon(

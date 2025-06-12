@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:pico_pos/features/splash/splash.dart';
+import 'package:pico_pos/features/splash/view/splash.dart';
 
 final themeNotifierProvider = StateNotifierProvider<ThemeNotifier, ThemeMode>(
   (ref) => ThemeNotifier(),
@@ -91,7 +91,7 @@ class MyApp extends ConsumerWidget {
       ),
       
 
-      home: Splash(),
+      home: const Splash(),
     );
   }
 }

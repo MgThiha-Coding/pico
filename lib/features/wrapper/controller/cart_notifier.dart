@@ -4,8 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:pico_pos/features/product_create/model/product_model.dart';
 
-
-
 class CartNotifier extends ChangeNotifier {
   CartNotifier() : super() {
     init();
@@ -41,9 +39,8 @@ class CartNotifier extends ChangeNotifier {
           qty: product.qty > 0 ? product.qty : 1,
         ),
       );
-    
     }
-      notifyListeners();
+    notifyListeners();
   }
 
   void reduceQty(ProductModel product) {
@@ -58,12 +55,12 @@ class CartNotifier extends ChangeNotifier {
     }
   }
 
-  void deleteCartItem(int id)async{
-     _cart.removeAt(id);
-     notifyListeners();
+  void deleteCartItem(int id) async {
+    _cart.removeAt(id);
+    notifyListeners();
   }
 
-  void clearCart()async{
+  void clearCart() async {
     _cart.clear();
     notifyListeners();
   }

@@ -25,7 +25,7 @@ class ProductModel {
       name: json['name'] ?? "No Item",
       category: json['category'] ?? "No Category",
       price: (json['price'] ?? 0).toDouble(),
-      cost: json['cost'] ?? 0.0,
+      cost: json['cost'] ?? '',
       barcode: json['barcode'],
       imagePath: json['imagePath'],
       id: json['id'] ?? 0,

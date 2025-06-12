@@ -25,13 +25,16 @@ class _MobileItemOverviewScreenState
       builder: (context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
           Center(
             child: Text(
               'Receipt',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
           ),
+
           SizedBox(height: 8),
+
           Divider(),
           ...cartItem.cart.map<Widget>((item) {
             final subtotal = item.qty * item.price;
@@ -46,7 +49,9 @@ class _MobileItemOverviewScreenState
               ),
             );
           }).toList(),
+
           Divider(),
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -57,6 +62,7 @@ class _MobileItemOverviewScreenState
           ),
         ],
       ),
+      
       onInitialized: (ctrl) => _receiptController = ctrl,
     );
   }
