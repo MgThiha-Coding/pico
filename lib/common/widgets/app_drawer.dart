@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pico_pos/features/dashboard/view/mobile/mobile_dashboard_screen.dart';
-import 'package:pico_pos/features/wrapper/view/mobile/mobile_wrapper_main_screen.dart';
+import 'package:pico_pos/features/wrapper/view/wrapper_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -18,7 +18,6 @@ class AppDrawer extends StatelessWidget {
                 Text(
                   'Pico POS',
                   style: TextStyle(
-                  
                     fontWeight: FontWeight.w500,
                     fontSize: 18,
                     color: Colors.white,
@@ -40,7 +39,7 @@ class AppDrawer extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MobileWrapperMainScreen(),
+                  builder: (context) => WrapperScreen()
                 ),
               );
             },

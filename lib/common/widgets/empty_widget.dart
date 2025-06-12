@@ -11,7 +11,7 @@ class EmptyWidget extends StatelessWidget {
         children: [
           Icon(Icons.inventory_2, size: 35, color: Color(0xFF2697FF)),
           const SizedBox(height: 10),
-          Text("No Products Found", style: TextStyle(color: Colors.white)),
+          Text("No Products", style: TextStyle(color: Colors.white)),
         ],
       ),
     );

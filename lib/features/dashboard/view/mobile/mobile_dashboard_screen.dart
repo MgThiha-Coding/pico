@@ -8,7 +8,6 @@ import 'package:pico_pos/features/dashboard/view/mobile/widgets/dashboard_produc
 import 'package:pico_pos/features/product_create/view/mobile/mobile_product_create_screen.dart';
 import 'package:pico_pos/features/product_create/controller/product_notifier.dart';
 
-
 class MobileDashboardScreen extends ConsumerStatefulWidget {
   const MobileDashboardScreen({super.key});
 
@@ -60,15 +59,16 @@ class _MobileDashboardScreenState extends ConsumerState<MobileDashboardScreen> {
       ),
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
-        centerTitle: true,
+        centerTitle: false,
         title: const AppTitle(title: "Dashboard"),
       ),
+
       drawer: const AppDrawer(),
+
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
         child: Column(
           children: [
-
             const SizedBox(height: 6),
             // Search Field
             Padding(
@@ -96,7 +96,7 @@ class _MobileDashboardScreenState extends ConsumerState<MobileDashboardScreen> {
                 },
               ),
             ),
-            
+
             const SizedBox(height: 10),
             // Product List or Grid
             Expanded(
@@ -113,6 +113,7 @@ class _MobileDashboardScreenState extends ConsumerState<MobileDashboardScreen> {
           ],
         ),
       ),
+
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (int index) {
