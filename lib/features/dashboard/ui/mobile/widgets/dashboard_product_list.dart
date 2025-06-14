@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pico_pos/features/product_create/controller/product_notifier.dart';
+import 'package:pico_pos/features/product_create/service/product_notifier.dart';
 
 class DashboardProductList extends ConsumerStatefulWidget {
   final List<ProductEntry> filteredProducts;

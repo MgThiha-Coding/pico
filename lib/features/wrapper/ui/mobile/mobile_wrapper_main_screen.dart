@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pico_pos/common/widgets/app_drawer.dart';
-import 'package:pico_pos/common/widgets/app_title.dart';
-import 'package:pico_pos/common/widgets/bar_code_scanner_screen.dart';
-import 'package:pico_pos/common/widgets/empty_widget.dart';
-import 'package:pico_pos/features/product_create/controller/product_notifier.dart';
-import 'package:pico_pos/features/wrapper/controller/cart_notifier.dart';
-import 'package:pico_pos/features/wrapper/view/mobile/mobile_item_overview_screen.dart';
-import 'package:pico_pos/features/wrapper/view/mobile/widgets/product_grid.dart';
-import 'package:pico_pos/features/wrapper/view/mobile/widgets/product_list.dart';
+import 'package:pico_pos/core/widgets/app_drawer.dart';
+import 'package:pico_pos/core/widgets/app_title.dart';
+import 'package:pico_pos/core/widgets/bar_code_scanner_screen.dart';
+import 'package:pico_pos/core/widgets/empty_widget.dart';
+import 'package:pico_pos/features/product_create/service/product_notifier.dart';
+import 'package:pico_pos/features/wrapper/service/cart_notifier.dart';
+import 'package:pico_pos/features/wrapper/ui/mobile/mobile_item_overview_screen.dart';
+import 'package:pico_pos/features/wrapper/ui/mobile/widgets/product_grid.dart';
+import 'package:pico_pos/features/wrapper/ui/mobile/widgets/product_list.dart';
 
 class MobileWrapperMainScreen extends ConsumerStatefulWidget {
   const MobileWrapperMainScreen({super.key});

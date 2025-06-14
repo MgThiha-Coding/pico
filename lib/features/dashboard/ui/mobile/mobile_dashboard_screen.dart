@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pico_pos/common/widgets/app_drawer.dart';
-import 'package:pico_pos/common/widgets/app_title.dart';
-import 'package:pico_pos/common/widgets/empty_widget.dart';
-import 'package:pico_pos/features/dashboard/view/mobile/widgets/dashboard_product_grid.dart';
-import 'package:pico_pos/features/dashboard/view/mobile/widgets/dashboard_product_list.dart';
-import 'package:pico_pos/features/product_create/view/mobile/mobile_product_create_screen.dart';
-import 'package:pico_pos/features/product_create/controller/product_notifier.dart';
+import 'package:pico_pos/core/widgets/app_drawer.dart';
+import 'package:pico_pos/core/widgets/app_title.dart';
+import 'package:pico_pos/core/widgets/empty_widget.dart';
+import 'package:pico_pos/features/dashboard/ui/mobile/widgets/dashboard_product_grid.dart';
+import 'package:pico_pos/features/dashboard/ui/mobile/widgets/dashboard_product_list.dart';
+import 'package:pico_pos/features/product_create/ui/mobile/mobile_product_create_screen.dart';
+import 'package:pico_pos/features/product_create/service/product_notifier.dart';
 
 class MobileDashboardScreen extends ConsumerStatefulWidget {
   const MobileDashboardScreen({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pico_pos/features/wrapper/view/mobile/mobile_wrapper_main_screen.dart';
+import 'package:pico_pos/features/wrapper/ui/mobile/mobile_wrapper_main_screen.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});

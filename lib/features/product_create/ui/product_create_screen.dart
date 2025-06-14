@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pico_pos/common/responsive_widget.dart';
-import 'package:pico_pos/features/product_create/view/mobile/mobile_product_create_screen.dart';
-import 'package:pico_pos/features/product_create/view/tablet/tablet_product_create_screen.dart';
+import 'package:pico_pos/core/widgets/responsive_widget.dart';
+import 'package:pico_pos/features/product_create/ui/mobile/mobile_product_create_screen.dart';
+import 'package:pico_pos/features/product_create/ui/tablet/tablet_product_create_screen.dart';
 
 class ProductCreateScreen extends StatefulWidget {
   const ProductCreateScreen({super.key});

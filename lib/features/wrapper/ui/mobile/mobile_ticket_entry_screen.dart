@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pico_pos/common/widgets/app_title.dart';
-import 'package:pico_pos/features/wrapper/controller/cart_notifier.dart';
+import 'package:pico_pos/core/widgets/app_title.dart';
+import 'package:pico_pos/features/wrapper/service/cart_notifier.dart';
 
 // Add this import:
 import 'package:flutter_bluetooth_printer/flutter_bluetooth_printer.dart';

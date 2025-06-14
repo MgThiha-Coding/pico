@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:pico_pos/features/splash/view/splash.dart';
+import 'package:pico_pos/features/splash/ui/splash.dart';
 
 final themeNotifierProvider = StateNotifierProvider<ThemeNotifier, ThemeMode>(
   (ref) => ThemeNotifier(),
@@ -32,7 +32,7 @@ class MyApp extends ConsumerWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       themeMode: themeMode,
-      
+
       // LIGHT THEME
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
@@ -48,7 +48,7 @@ class MyApp extends ConsumerWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        
+
         textTheme: const TextTheme(
           bodyLarge: TextStyle(color: Colors.black87, fontSize: 16),
           bodyMedium: TextStyle(color: Colors.black54),
@@ -57,7 +57,7 @@ class MyApp extends ConsumerWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        
+
         floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: Colors.blueGrey,
         ),
@@ -89,7 +89,6 @@ class MyApp extends ConsumerWidget {
           ),
         ),
       ),
-      
 
       home: const Splash(),
     );

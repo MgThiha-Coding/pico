@@ -2,17 +2,18 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pico_pos/features/product_create/controller/product_notifier.dart';
+import 'package:pico_pos/features/product_create/service/product_notifier.dart';
+import 'package:pico_pos/features/wrapper/service/cart_notifier.dart';
 
-class DashboardProductGrid extends ConsumerStatefulWidget {
+class ProductGrid extends ConsumerStatefulWidget {
   final List<ProductEntry> filteredProducts;
-  const DashboardProductGrid(this.filteredProducts, {super.key});
+  const ProductGrid(this.filteredProducts, {super.key});
 
   @override
-  ConsumerState<DashboardProductGrid> createState() => _ProductGridState();
+  ConsumerState<ProductGrid> createState() => _ProductGridState();
 }
 
-class _ProductGridState extends ConsumerState<DashboardProductGrid> {
+class _ProductGridState extends ConsumerState<ProductGrid> {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
@@ -26,64 +27,8 @@ class _ProductGridState extends ConsumerState<DashboardProductGrid> {
       itemBuilder: (context, index) {
         final data = widget.filteredProducts[index];
         return GestureDetector(
-          onLongPress: () {
-            showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  backgroundColor: Color(0xFF2A2D3E),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  titlePadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
-                  contentPadding: const EdgeInsets.fromLTRB(24, 12, 24, 0),
-                  actionsPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  title: Text(
-                    'Delete Product',
-                    style: TextStyle(
-                      color: Colors.redAccent,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                  content: Text(
-                    'Are you sure you want to delete this item?',
-                    style: TextStyle(color: Colors.white70, fontSize: 16),
-                  ),
-                  actionsAlignment: MainAxisAlignment.spaceBetween,
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      style: TextButton.styleFrom(
-                        foregroundColor: Colors.greenAccent,
-                      ),
-                      child: const Text(
-                        'Cancel',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        ref
-                            .read(productNotifierProvider.notifier)
-                            .deleteProductByHiveKey(data.hiveKey);
-                        Navigator.pop(context);
-                      },
-                      style: TextButton.styleFrom(
-                        foregroundColor: Colors.redAccent,
-                      ),
-                      child: const Text(
-                        'Delete',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                  ],
-                );
-              },
-            );
+          onTap: () {
+            ref.read(cartNotifierProvider.notifier).addtoCart(data.product);
           },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(12),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pico_pos/common/responsive_widget.dart';
-import 'package:pico_pos/features/dashboard/view/mobile/mobile_dashboard_screen.dart';
-import 'package:pico_pos/features/dashboard/view/tablet/tablet_dashboard_screen.dart';
+import 'package:pico_pos/core/widgets/responsive_widget.dart';
+import 'package:pico_pos/features/dashboard/ui/mobile/mobile_dashboard_screen.dart';
+import 'package:pico_pos/features/dashboard/ui/tablet/tablet_dashboard_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
